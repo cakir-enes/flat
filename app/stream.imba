@@ -4,9 +4,8 @@ import './editor'
 import {start} from './pmeditor/pmeditor'
 import {DOMSerializer} from 'prosemirror-model'
 import {promptRef} from './prompt'
+import {toElement} from "./helper"
 
-def toElement content
-	document.createRange().createContextualFragment content
 
 const icons = {
 	edit: import("./icons/edit.svg")
@@ -29,7 +28,7 @@ tag Block
 	css * m:0
 
 	def mount
-		const frag = document.createRange().createContextualFragment(content)
+		let frag = toElement content, do(name, detail) emit(name, detail)
 		$c.replaceWith(frag)
 
 	def render
@@ -49,7 +48,7 @@ tag Thread
 		.thread d:hflex p:40px jc:space-between
 		
 	def mount
-		$title.replaceWith toElement title
+		$title.replaceWith toElement title, emit 
 		
 	
 	<self[d:hflex jc:space-between]>
@@ -152,7 +151,6 @@ tag stream-view
 		if !focusedBlock
 			return
 		if alsoFocus
-			console.log "ACTUALLY FOCUSING {focusedBlock.id}"
 			document.getElementById(focusedBlock.id).focus!
 
 	def changeFocus e, down?

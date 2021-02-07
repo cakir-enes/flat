@@ -13,7 +13,7 @@ global css
 			pos:absolute m:auto l:0 r:0 zi:2 w:500px h:100% d:grid place-content:center
 
 	.ref
-		ff:'Zilla Slab Highlight' bg:black c:$cyan
+		ff:'Zilla Slab Highlight' bg:black c:$cyan cursor:pointer
 	.shadow
 		box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 0px 2px, rgba(0, 0, 0, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
 	.box-shadow
