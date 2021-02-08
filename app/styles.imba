@@ -37,7 +37,7 @@ global css
 
 	body w:100% h:100% m:0
 
-	* scrollbar-width: thin scrollbar-color: $light $primary
+	* scrollbar-width: thin scrollbar-color: rgba(12,12,12,0.4) rgba(12,12,12,0.0)
 
 	button -webkit-appearance: none
 		bg:blue5 @hover:blue6

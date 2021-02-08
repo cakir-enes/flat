@@ -74,7 +74,7 @@ tag stream-view
 	prop contentFilters
 
 	css .center d:grid place-items:center h:100%
-		.stream d:vflex w:512px pos:relative h:100%
+		.stream d:vflex w:512px pos:relative h:100% of:auto
 		.editor h:13rem max-height:12rem fls:0 bg:$darkest mb:2
 			c:$light rd:6px of:auto
 		.cl background-color: #DFDBE5
@@ -248,7 +248,7 @@ tag stream-view
 				<svg[fill:black] src="./icons/cloudz.svg">
 
 			<div.stream[bg:$pavion-bg h:100% pl:4 pr:4 rd:2]>
-				<div$strim[flg:1 ofy:scroll ofx:hidden] 
+				<div$strim[flg:1 h:300px ofy:auto ofx:hidden] 
 					tabIndex=0 
 					@keydown.down=focusDown
 					@keydown.up=focusUp
