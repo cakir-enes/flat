@@ -6,25 +6,27 @@ export tag Thread
 
 	css button bg:none @hover:black ff:mono rd:6
 
-	# def mount
-	# 	let item = store.getItem id
-	# 	console.log "{item} ID: {id}"
-	# 	let contentFrag = toElement item.content
-	# 	$c.replaceWith contentFrag
-	# 	let titleFrag = toElement item.title
-	# 	$t.replaceWith titleFrag
+	get item
+		store.getItem id
 
-	<self[d:vflex bg:$darkest min-width:400px p:14px m:6px rd:6px]>
-		<div[flg:1]>
-			<div[d:hflex ai:center c:blue4 fs:1.5em]>
-				<div$t>
-				<div[flg:1]>
-				<button @click=emit("edit", {id: id})> "e"
-				<button @click=emit("close", {id: id})> "x"
-			<div$c>
-		<div>			
-			<h2> "Backlinks"
-			<ol> for b in store.getBacklinks(id) ?? []
-				<li @click=emit('open', {id: b})> <h3> store.titleOf b
+	def mount
+		let contentFrag = toElement item.content
+		$c.replaceWith contentFrag
+
+	<self[d:hflex h:min-content]>
+		<div[w:60px mr:2]>
+			<svg[fill:black] src="./icons/cloudz.svg">
+		<div[d:vflex bg:$pavion-bg min-width:400px p:14px rd:3px]>
+			<div[flg:0]>
+				<div[d:hflex ai:center c:blue4 fs:1.5em]>
+					<div> item..title
+					<div[flg:1]>
+					<button @click=emit("edit", {id: id})> "e"
+					<button @click=emit("close", {id: id})> "x"
+				<div$c>
+			<div>			
+				<h2> "Backlinks"
+				<ol> for b in store.getBacklinks(id) ?? []
+					<li @click=emit('open', {id: b})> <h3> store.titleOf b
 
 		

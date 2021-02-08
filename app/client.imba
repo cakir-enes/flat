@@ -33,7 +33,7 @@ tag App
 	editor = ""
 	mergingItems = []
 	threadId = ""
-	openThreads = ["thread3", "thread4"]
+	openThreads = []
 	stream = null
 
 	def cancelEdit
@@ -60,11 +60,11 @@ tag App
 			@close=(do closeThread $1.detail.id)
 			@open=(do openThread $1.detail.id)>
 		
-			<div[d:hflex jc:center bg:$primary]>
+			<div.bg-pavion[d:hflex jc:center h:100%]>
 				# <plugins-view[flg:1] 
 				# 	@questionDelete=(do store.deleteQuestion($1.detail.id))>
 				
-				<div[pos:relative]>
+				<div[pos:relative mt:4 mb:4]>
 					switch editor
 						when "thread"
 							<thread-editor.overlay threadId=threadId>
@@ -72,7 +72,6 @@ tag App
 							<merge-editor.overlay items=Array.from(mergingItems)>
 
 					<div#overlay.overlay[d:none]>
-
 					stream = <stream-view
 						contentFilters=[todoFilter, questionFilter]
 						@merging=(do 
@@ -82,7 +81,7 @@ tag App
 							threadId = $1.detail
 							editor = "thread")>
 
-				<div[flg:1 d:hflex gap:12px of:auto ml:16px]> for id in openThreads
+				<div[flg:1 mt:4 mb:4 d:hflex gap:12px of:auto ml:16px]> for id in openThreads
 					<Thread id=id>
 
 
