@@ -18,7 +18,7 @@ export tag Thread
 			<svg[fill:black] src="./icons/cloudz.svg">
 		<div[d:vflex bg:$pavion-bg min-width:400px p:14px rd:3px]>
 			<div[flg:0]>
-				<div[d:hflex ai:center c:blue4 fs:1.5em]>
+				<div.heading[d:hflex ai:center c:black fs:1.5em]>
 					<div> item..title
 					<div[flg:1]>
 					<button @click=emit("edit", {id: id})> "e"

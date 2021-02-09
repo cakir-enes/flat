@@ -13,21 +13,30 @@ global css
 		--cyan:#94dae0
 	
 	.bg-pavion
-		bg: radial-gradient(42.48% 50.06% at 93.85% 91.46%, #941652 0%, rgba(179, 51, 51, 0.13) 100%), radial-gradient(75.98% 149.48% at 79.38% 18.7%, #58CEC7 0%, rgba(62, 141, 235, 0.246391) 51.71%, rgba(244, 156, 53, 0) 100%, rgba(234, 234, 234, 0) 100%), radial-gradient(75.98% 149.48% at 79.38% 18.7%, #CE9858 0%, rgba(235, 155, 62, 0.246391) 51.71%)
+		# bg: radial-gradient(42.48% 50.06% at 93.85% 91.46%, #941652 0%, rgba(179, 51, 51, 0.13) 100%), radial-gradient(75.98% 149.48% at 79.38% 18.7%, #58CEC7 0%, rgba(62, 141, 235, 0.246391) 51.71%, rgba(244, 156, 53, 0) 100%, rgba(234, 234, 234, 0) 100%), radial-gradient(75.98% 149.48% at 79.38% 18.7%, #CE9858 0%, rgba(235, 155, 62, 0.246391) 51.71%)
+		bg: radial-gradient(42.48% 50.06% at 93.85% 91.46%, #787878 0%, rgba(89, 89, 89, 0.36) 100%), radial-gradient(75.98% 149.48% at 79.38% 18.7%, #CE9858 0%, rgba(235, 155, 62, 0.246391) 51.71%, rgba(244, 156, 53, 0) 100%)
 
 
 	.overlay 
 			pos:absolute m:auto l:0 r:0 zi:2 w:500px h:100% d:grid place-content:center
+	
+	.heading
+		ff: 'Zilla Slab Highlight', cursive
+		fw:bold
+	
+	.text
+		ff: 'Work Sans', sans-serif
+		fw:500
 
 	.ref
-		ff:'Zilla Slab Highlight' bg:black c:$cyan cursor:pointer
+		ff:'Zilla Slab Highlight' cursor:pointer
 	.shadow
 		box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 0px 2px, rgba(0, 0, 0, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
 	.box-shadow
 		box-shadow: rgba(240, 46, 170, 0.4) 5px 5px, rgba(240, 46, 170, 0.3) 10px 10px, rgba(240, 46, 170, 0.2) 15px 15px, rgba(240, 46, 170, 0.1) 20px 20px, rgba(240, 46, 170, 0.05) 25px 25px;
 
 	html
-		w:100% h:100% m:0 ff:sans c:white
+		w:100% h:100% m:0 ff:'Work Sans' c:white
 	
 	.repeat
 		bgs:7vw

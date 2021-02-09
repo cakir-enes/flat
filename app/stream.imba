@@ -17,8 +17,8 @@ tag ControlBar
 
 	<self>
 		<div[d:hflex g:8px]>
-			<svg[w:14px h:14px p:4px rd:full] [bg@hover:white] @click=emit("delete", {id}) src=icons.edit> 
-			<svg[w:14px h:14px p:4px rd:full] @click=emit("edit", {id}) src=icons.edit> 
+			<svg[w:19px h:19px p:4px rd:full] [bg@hover:white] @click=emit("delete", {id}) src=icons.edit> 
+			<svg[w:19px h:19px p:4px rd:full] @click=emit("edit", {id}) src=icons.edit> 
 
 tag Block
 	prop content
@@ -32,9 +32,9 @@ tag Block
 		$c.replaceWith(frag)
 
 	def render
-		<self[d:hflex jc:space-between]>
+		<self.text[d:hflex jc:space-between]>
 			<div$c[m:0]>
-			<ControlBar>
+			# <ControlBar>
 
 
 tag Thread
@@ -44,17 +44,17 @@ tag Thread
 
 	hover = false
 
-	css .title  rd:4px p:2px c:$cyan flg:1 cursor:pointer
+	css .title  rd:4px p:2px flg:1 cursor:pointer
 		.thread d:hflex p:40px jc:space-between
 		
 	def mount
 		$title.replaceWith toElement title, emit 
 		
 	
-	<self[d:hflex jc:space-between]>
-		<div.title @click=emit("open", {id: id})>
+	<self[d:hflex jc:space-between cursor:pointer] @click=emit("open", {id: id})>
+		<div.heading>
 			<div$title>
-		<ControlBar id=id>
+		# <ControlBar id=id>
 
 
 tag Edit
