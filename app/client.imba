@@ -30,6 +30,9 @@ def questionFilter {txt, blockId}
 
 
 tag App
+	
+	css .editor bg:$pavion-bg c:black ml:4
+
 	editor = ""
 	mergingItems = []
 	threadId = ""
@@ -54,7 +57,7 @@ tag App
 	
 
 	def render
-		<self[of:auto] 
+		<self.bg-pavion[of:auto p:1 d:flex h:100%] 
 			@keydown.esc.prevent=cancelEdit 
 			@close-editor=cancelEdit
 			@edit=(do 
@@ -63,26 +66,26 @@ tag App
 			@close=(do closeThread $1.detail.id)
 			@open=(do openThread $1.detail.id)>
 		
-			<div.bg-pavion[d:hflex jc:center h:100%]>
-				# <plugins-view[flg:1] 
-				# 	@questionDelete=(do store.deleteQuestion($1.detail.id))>
-				
-				<div[pos:relative mt:4 mb:4]>
+			<div[d:hflex jc:center flg:1  m:20px]>
+				<div[d:flex pos:relative]>
+					<div#overlay.overlay[d:none]>
+					<svg[fill:black w:50px] src="./icons/cloudz.svg">
 					switch editor
 						when "thread"
-							<thread-editor.overlay threadId=threadId>
+							<thread-editor.editor[bg:$pavion-bg] threadId=threadId>
 						when "merge"
-							<merge-editor.overlay items=Array.from(mergingItems)>
-
-					<div#overlay.overlay[d:none]>
-					stream = <stream-view
-						contentFilters=[todoFilter, questionFilter]
-						@merge=(do 
-							mergingItems = $1.detail
-							editor = "merge")>
+							<merge-editor.editor[bg:$pavion-bg] items=Array.from(mergingItems)>
+						else
+							stream = <stream-view
+								contentFilters=[todoFilter, questionFilter]
+								@merge=(do 
+									mergingItems = $1.detail
+									editor = "merge")>
+							stream
 
 				<div[flg:1 mt:4 mb:4 d:hflex gap:12px of:auto ml:16px]> for id in openThreads
 					<Thread $key=id id=id>
+			<div>
 
 
 

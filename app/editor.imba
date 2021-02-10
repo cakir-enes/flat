@@ -77,7 +77,7 @@ tag merge-editor
 		contentEditor..view.destroy!
 		titleEditor..view.destroy!
 	
-	<self[bg:black] @prompt.stop=insertRef @keydown.shift.enter=merge>
+	<self[d:vflex jc:flex-start w:512px mb:0] @prompt.stop=insertRef @keydown.shift.enter=merge>
 		<div>
 			<input[bg:gray] type="text" bind=title>
 			<div$contentEditor>
