@@ -28,6 +28,9 @@ global css
 		ff: 'Work Sans', sans-serif
 		fw:500
 
+	.icon
+		w:18px h:18px cursor:pointer bg@hover:black c@hover:white p:4px rd:4
+
 	.ref
 		ff:'Zilla Slab Highlight' cursor:pointer
 	.shadow

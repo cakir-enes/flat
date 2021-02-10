@@ -3,27 +3,37 @@ import {start} from './pmeditor/pmeditor'
 import {promptRef} from "./prompt"
 
 
-tag inline-block-editor
+def toElement content
+	document.createRange().createContextualFragment content
+
+tag inline-block-editor < div
 	prop blockId
 
-	content = ''
+	editor
 
 	get block
 		store.items.byId[blockId]
 
+	def mount
+		let cbs = {
+			onRefTrigger: do emit('prompt')
+			onFocus: do(),
+			onRefClick: do emit('open', {id: $1})
+		}
+		let content = toElement block.content
+		editor = start {mount: $editor}, content, cbs
+		editor.view.focus!
 
+	def unmount
+		editor.view.destroy!
+
+		
 	def render
 		<self>
-			<p> "Inline editor" 
-				<span$textEditor>
 			<div>
-				<div$textContent> "Such as this sentence"
-			# <textarea$box bind=block.content> 
+				<div$editor>
 		
 
-def toElement content
-	document.createRange().createContextualFragment content
-	
 tag merge-editor
 	prop items
 	
@@ -35,7 +45,7 @@ tag merge-editor
 		let cbs = {
 			onRefTrigger: do emit('prompt')
 			onFocus: do(),
-			onRefClick: do console.log $1
+			onRefClick: do emit('open', {id: $1})
 		}
 
 		items = items.map do store.getItem $1
@@ -45,19 +55,6 @@ tag merge-editor
 		items
 			.map(do toElement $1.content)
 			.forEach(do content.append $1)
-			
-		
-		# for item, i in items
-		# 	if item.kind is 'block'
-		# 		content.append toElement item.content
-		# 		# content.insertAdjacentElement "afterend", toElement item.content
-		# 	elif item.kind is 'thread'
-		# 		let frag = <div[bg:red]> (toElement item.title)
-		# 		let f = <ref.ref contenteditable=false> "hole"
-		# 		f.setAttribute "ref-id", "vii"
-		# 		f.setAttribute "ref-label", "buu"
-		# 		content.append f
-				
 				
 		contentEditor = start {mount: $contentEditor}, content, cbs
 		contentEditor.view.focus!
@@ -98,7 +95,6 @@ tag thread-editor
 		
 
 	def render
-		<self[bg:yellow3 zi:2 w:512px h:1024px]>
+		<self[zi:2]>
 			<textarea$title>
-			for id in thread.content
-				<inline-block-editor blockId=id>
+			<inline-block-editor blockId=threadId>

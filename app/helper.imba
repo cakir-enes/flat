@@ -18,6 +18,7 @@ def addRefClickHandlers refs, emitter
 		r.addEventListener 'click', do emitter("open", {id})
 
 export def toElement content, emitter
+	console.log content
 	let f = document.createRange().createContextualFragment content
 	addRefClickHandlers filterRefs(f), emitter
 	f

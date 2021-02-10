@@ -217,9 +217,9 @@ tag stream-view
 	
 	def onEnter
 		if mergeable?
-			emit("merging", store.selectedItems)
+			emit("merge", store.selectedItems)
 		elif editable? and focusedItem.kind is "thread"
-			emit("editing", focusedItem.id)
+			emit("edit", {id: focusedItem.id})
 		elif editable? and focusedItem.kind is "block"
 			focusedItem.editing = true
 			editing? = true

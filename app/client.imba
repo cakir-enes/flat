@@ -57,6 +57,9 @@ tag App
 		<self[of:auto] 
 			@keydown.esc.prevent=cancelEdit 
 			@close-editor=cancelEdit
+			@edit=(do 
+				threadId = $1.detail.id
+				editor = "thread")
 			@close=(do closeThread $1.detail.id)
 			@open=(do openThread $1.detail.id)>
 		
@@ -74,15 +77,12 @@ tag App
 					<div#overlay.overlay[d:none]>
 					stream = <stream-view
 						contentFilters=[todoFilter, questionFilter]
-						@merging=(do 
+						@merge=(do 
 							mergingItems = $1.detail
-							editor = "merge")
-						@editing=(do
-							threadId = $1.detail
-							editor = "thread")>
+							editor = "merge")>
 
 				<div[flg:1 mt:4 mb:4 d:hflex gap:12px of:auto ml:16px]> for id in openThreads
-					<Thread id=id>
+					<Thread $key=id id=id>
 
 
 
