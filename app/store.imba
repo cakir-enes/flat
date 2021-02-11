@@ -112,6 +112,10 @@ export default new class
 		storeSet "backlinks", backlinks
 		newId
 
+	def editBlock {id, content}
+		items.byId[id].content = content
+		imba.commit!
+
 	def deleteQuestion id
 		console.log "DELET QUESTION {id}"
 

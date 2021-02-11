@@ -29,6 +29,32 @@ def questionFilter {txt, blockId}
 
 
 
+# tag Item
+# 	prop id
+	
+# 	def mount
+# 		console.log "ID {id}"
+
+# 	<self[bg:gray3 c:black m:8px] @click.emit("close", {id: id})>
+# 		<div$c innerHTML="<div>{id}</div>">
+
+# tag App
+# 	itemz = []
+
+
+# 	def cloze id
+# 		console.log id
+# 		itemz = itemz.filter do $1 isnt id
+# 		# itemz.splice i, 1
+# 		console.log "ITEMZ AFTER {itemz}"
+
+# 	def render
+# 		<self[d:hflex bg:black] @close=(do cloze $1.detail.id)  >
+# 			<button[fls:1] @click=(do itemz.push("item-{itemz.length}"))> "OPEN"
+# 			for id in itemz
+# 				<Item id=id $key=id>
+
+
 tag App
 	
 	css .editor bg:$pavion-bg c:black ml:4
@@ -57,7 +83,7 @@ tag App
 	
 
 	def render
-		<self.bg-pavion[of:auto p:1 d:flex h:100%] 
+		<self.bg-pavion[of:auto d:flex h:100%] 
 			@keydown.esc.prevent=cancelEdit 
 			@close-editor=cancelEdit
 			@edit=(do 
@@ -72,9 +98,9 @@ tag App
 					<svg[fill:black w:50px] src="./icons/cloudz.svg">
 					switch editor
 						when "thread"
-							<thread-editor.editor[bg:$pavion-bg] threadId=threadId>
+							<thread-editor.editor threadId=threadId>
 						when "merge"
-							<merge-editor.editor[bg:$pavion-bg] items=Array.from(mergingItems)>
+							<merge-editor.editor items=Array.from(mergingItems)>
 						else
 							stream = <stream-view
 								contentFilters=[todoFilter, questionFilter]
@@ -83,7 +109,7 @@ tag App
 									editor = "merge")>
 							stream
 
-				<div[flg:1 mt:4 mb:4 d:hflex gap:12px of:auto ml:16px]> for id in openThreads
+				<div[flg:1  mb:4 d:hflex gap:12px of:auto ml:16px]> for id in openThreads
 					<Thread $key=id id=id>
 			<div>
 

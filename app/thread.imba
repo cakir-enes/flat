@@ -2,6 +2,7 @@ import store from "./store"
 import {toElement} from "./helper"
 import close from "./icons/close.svg"
 import edit from "./icons/edit.svg"
+import {addRefClickHandlers, filterRefs} from "./helper"
 
 export tag Thread < div
 	prop id
@@ -10,12 +11,10 @@ export tag Thread < div
 
 	get item
 		store.getItem id
-
-	def mount
-		let contentFrag = toElement item.content, do(name, data) emit(name, data)
-		$c.replaceWith contentFrag
+	
+	def rendered
+		addRefClickHandlers filterRefs($c), do(name, data) emit(name, data)
 		
-
 	<self[d:hflex h:min-content c:black]>
 		<div[w:60px mr:2]>
 			<svg[fill:black] src="./icons/cloudz.svg">
@@ -26,7 +25,7 @@ export tag Thread < div
 					<div[flg:1]>
 					<svg.icon @click.emit-edit({id}) src=edit>
 					<svg.icon @click.emit-close({id}) src=close>
-				<div$c>
+				<div$c innerHTML=item.content>
 			<div>			
 				<h2[m:0]> "Backlinks"
 				<ol[m:0]> for b in store.getBacklinks(id) ?? []

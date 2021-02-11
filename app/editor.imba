@@ -8,6 +8,7 @@ def toElement content
 
 tag inline-block-editor < div
 	prop blockId
+	css * m:0
 
 	editor
 
@@ -24,14 +25,25 @@ tag inline-block-editor < div
 		editor = start {mount: $editor}, content, cbs
 		editor.view.focus!
 
+
 	def unmount
 		editor.view.destroy!
 
+	
+	def finishEditing
+		store.editBlock {id: blockId, content: editor.contentHtml!}
+		emit 'close-editor'
+
+	def insertRef
+		let {ok, id, title} = await promptRef!
+		if ok
+			editor.insertRef {id, label: title}
+		editor.view.focus!
+
 		
 	def render
-		<self>
-			<div>
-				<div$editor>
+		<self @keydown.shift.enter=finishEditing @prompt.stop=insertRef>
+			<div$editor[bg:none]>
 		
 
 tag merge-editor
@@ -79,13 +91,14 @@ tag merge-editor
 	
 	<self[d:vflex jc:flex-start w:512px mb:0] @prompt.stop=insertRef @keydown.shift.enter=merge>
 		<div>
-			<input[bg:gray] type="text" bind=title>
+			<input type="text" bind=title>
 			<div$contentEditor>
 
 
 
 tag thread-editor
 	prop threadId
+	css * m:0
 
 	get thread
 		store.items.byId[threadId]
@@ -95,6 +108,6 @@ tag thread-editor
 		
 
 	def render
-		<self[zi:2]>
-			<textarea$title>
-			<inline-block-editor blockId=threadId>
+		<self[d:vflex jc:flex-start w:512px mb:0]>
+			<input$title[bg:none fls:1 fl:none w:100%]>
+			<inline-block-editor[flg:1 p:0 m:0] blockId=threadId>

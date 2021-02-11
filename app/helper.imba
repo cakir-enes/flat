@@ -1,5 +1,5 @@
 
-def filterRefs node
+export def filterRefs node
 	let r = []
 	_filterRefs node, r
 	return r
@@ -12,13 +12,12 @@ def _filterRefs node, refs = []
 			_filterRefs n, refs
 	
 
-def addRefClickHandlers refs, emitter
+export def addRefClickHandlers refs, emitter
 	for r in refs
 		let id = r.getAttribute "ref-id"
 		r.addEventListener 'click', do emitter("open", {id})
 
 export def toElement content, emitter
-	console.log content
 	let f = document.createRange().createContextualFragment content
 	addRefClickHandlers filterRefs(f), emitter
 	f
