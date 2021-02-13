@@ -3,6 +3,7 @@ import {toElement} from "./helper"
 import close from "./icons/close.svg"
 import edit from "./icons/edit.svg"
 import {addRefClickHandlers, filterRefs} from "./helper"
+import cloudzrot from "./icons/cloudz-rot.svg"
 
 export tag Thread < div
 	prop id
@@ -23,7 +24,7 @@ export tag Thread < div
 		
 	<self[d:hflex h:min-content c:black] @edit.stop=(do edit? = true) @close=(do edit? = false)>
 		<div[w:50px mr:2]>
-			<svg[fill:black] src="./icons/cloudz.svg">
+			<svg[fill:black] src="./icons/cloudz-rot.svg">
 		if edit?						
 			<thread-editor.editor[min-width:400px rd:3px ] threadId=id>
 		else 

@@ -35,7 +35,6 @@ global css
 		ff: 'Zilla Slab Highlight', cursive
 		fw:bold
 		fs:1.5em
-		c:black
 	
 	.text
 		ff: 'Work Sans', sans-serif

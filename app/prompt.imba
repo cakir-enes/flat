@@ -18,10 +18,10 @@ export tag RefPrompt
 	
 	
 	focusItem = -1
+	filteredResults = []
 	
-	
-	get filteredResults
-		store.query query
+	def search
+		filteredResults = store.query query
 
 	def focused? i
 		focusItem is i
@@ -69,7 +69,7 @@ export tag RefPrompt
 				autofocus 
 				type="text" 
 				bind=query 
-				@input.throttle=(do query;console.log "R {filteredResults.length}") 
+				@input.throttle=search
 				@keydown.down.prevent=focusFirst 
 				placeholder="Search">
 			<ol tabIndex=0> for r, i in filteredResults
