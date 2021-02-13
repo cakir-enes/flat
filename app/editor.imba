@@ -1,7 +1,7 @@
 import store from './store'
 import {start} from './pmeditor/pmeditor'
 import {promptRef} from "./prompt"
-
+import close from "./icons/close.svg"
 
 def toElement content
 	document.createRange().createContextualFragment content
@@ -43,7 +43,7 @@ tag inline-block-editor < div
 		
 	def render
 		<self @keydown.shift.enter=finishEditing @prompt.stop=insertRef>
-			<div$editor[bg:none]>
+			<div$editor[h:100%]>
 		
 
 tag merge-editor
@@ -98,7 +98,7 @@ tag merge-editor
 
 tag thread-editor
 	prop threadId
-	css * m:0
+	
 
 	get thread
 		store.items.byId[threadId]
@@ -108,6 +108,8 @@ tag thread-editor
 		
 
 	def render
-		<self[d:vflex jc:flex-start w:512px mb:0]>
-			<input$title[bg:none fls:1 fl:none w:100%]>
-			<inline-block-editor[flg:1 p:0 m:0] blockId=threadId>
+		<self[d:vflex jc:flex-start mb:0] @keydown.esc.stop.emit-close>
+			<div[d:hflex]>
+				<input$title.heading[flg:1 w:100% bd:0]>
+				<svg.icon @click.emit-close src=close>
+			<inline-block-editor[flg:1] blockId=threadId>
