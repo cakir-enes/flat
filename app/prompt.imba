@@ -1,22 +1,21 @@
 import store from './store'
-let query = "asd"
+
 
 export tag RefPrompt
 	css 
-		.container p:4px bd:2px solid $darkest rd:6px bg:$darkest
+		.container p:4px rd:6px bg:$darkest
 		
 		ol 
-			of:auto max-height:600px list-style:none p:0 m:16px fs:14px mr:0px
+			of:auto max-height:600px list-style:none p:0 m:16px fs:12px mr:0px
 			scrollbar-color: $light $darkest
 		li 
-			bg@hover:$light bg@focus:$light c@focus:$darkest
-			p:4px bd:1px rd:4px mr:4px
-		input w:100% mt:12px fs:24px c:white outline: none
-		h2
-			m:2px
+			bg@hover:$light bg@focus:$light 
+			p:4px bd:1px rd:4px mr:4px c:$light @hover:$darkest @focus:$darkest
+		input w:100% mt:12px fs:24px outline: none bd:0 pl:20px c:white
+		h2 m:2px
 		
 	
-	
+	query = ""
 	focusItem = -1
 	filteredResults = []
 	
@@ -54,6 +53,7 @@ export tag RefPrompt
 		emit('cancel')
 	
 	def select {id, title}
+		console.log "SELECTING"
 		emit 'select', {id, title}
 		emit 'cancel'
 	
@@ -61,31 +61,31 @@ export tag RefPrompt
 	<self.container
 		tabindex=-1
 		autorender=true
-		@keydown.esc=cancelPrompt 
-		@keydown.up.prevent=focusUp
-		@keydown.down.prevent=focusDown>		
+		@keydown.esc.stop=cancelPrompt 
+		@keydown.up.stop.prevent=focusUp
+		@keydown.down.stop.prevent=focusDown>		
 		<div.container.shadow>
 			<input$inp.inp 
 				autofocus 
 				type="text" 
 				bind=query 
 				@input.throttle=search
-				@keydown.down.prevent=focusFirst 
+				@keydown.down.stop.prevent=focusFirst 
 				placeholder="Search">
 			<ol tabIndex=0> for r, i in filteredResults
-				<li id="item{i}" @click=select(r) @keydown.enter.prevent=select(r) tabIndex=-1> 
+				<li id="item{i}" @click=select(r) @keydown.enter.stop.prevent=select(r) tabIndex=-1> 
 					<h2> r.title
 
 
-export def promptRef
+export def promptRef parent
+	css .prompt pos:absolute t:0 l:0 r:0 b:0 h:80%  w:75% m:auto
 	return new Promise do |res, rej|
-		let frag = document.getElementById "overlay"
-		frag.style.display = "block"
+		
 		let cancel = do
-			frag.style.display = "none"
-			document.getElementById("prompt").remove!
+			let prompt = parent.querySelector ".prompt"
+			prompt.remove!
 			res({ok: false})
-
-		frag.appendChild <RefPrompt#prompt @cancel.stop=cancel @select.stop=(do res({ok: true, id: $1.detail.id, title: $1.detail.title})) />
+		
+		parent.appendChild <RefPrompt.prompt @cancel.stop=cancel @select.stop=(do $1.detail..id && res({ok: true, id: $1.detail.id, title: $1.detail.title})) />
 	
 	

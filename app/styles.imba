@@ -20,6 +20,7 @@ global css
 	input, select, textarea, button 
 		font-family: inherit
 		bg: inherit
+		bd:0
 
 	p m:0
 	

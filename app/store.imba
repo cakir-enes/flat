@@ -132,6 +132,5 @@ export default new class
 		if q is ""
 			return []
 		let l = Object.values(items.byId).filter(do $1.kind is 'thread' and $1.title.includes(q))
-		console.log l
 		return l
 

@@ -22,13 +22,13 @@ export tag Thread < div
 		edit? = true
 
 		
-	<self[d:hflex h:min-content c:black] @edit.stop=(do edit? = true) @close=(do edit? = false)>
+	<self[d:hflex h:min-content c:black] @edit.stop=(do edit? = true) @cancel=(do edit? = false)>
 		<div[w:50px mr:2]>
 			<svg[fill:black] src="./icons/cloudz-rot.svg">
 		if edit?						
-			<thread-editor.editor[min-width:400px rd:3px ] threadId=id>
+			<thread-editor.editor[min-width:400px rd:3px] threadId=id>
 		else 
-			<div[d:vflex min-width:400px rd:3px jc:space-between]>
+			<div[d:vflex min-width:400px rd:3px jc:space-between p:4px]>
 				<div[flg:0]>
 					<div.heading[d:hflex ai:center]>
 						<div> item..title

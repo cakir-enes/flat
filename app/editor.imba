@@ -6,7 +6,7 @@ import close from "./icons/close.svg"
 def toElement content
 	document.createRange().createContextualFragment content
 
-tag inline-block-editor < div
+tag inline-block-editor
 	prop blockId
 	css * m:0
 
@@ -35,16 +35,15 @@ tag inline-block-editor < div
 		emit 'close-editor'
 
 	def insertRef
-		let {ok, id, title} = await promptRef!
+		let {ok, id, title} = await promptRef $parent
 		if ok
 			editor.insertRef {id, label: title}
 		editor.view.focus!
 
-		
-	def render
-		<self @keydown.shift.enter=finishEditing @prompt.stop=insertRef>
-			<div$editor[h:100%]>
-		
+	<self @keydown.shift.enter=finishEditing @prompt.stop=insertRef>
+		<div$parent[pos:relative]>
+			<div$editor[h:100% bd:0 bg:none]>
+	
 
 tag merge-editor
 	prop items
@@ -108,8 +107,12 @@ tag thread-editor
 		
 
 	def render
-		<self[d:vflex jc:flex-start mb:0] @keydown.esc.stop.emit-close>
-			<div[d:hflex]>
+		<self[d:vflex jc:flex-start mb:0 bd:0 p:4px] @keydown.esc.stop.emit-cancel>
+			e = <inline-block-editor[flg:1] blockId=threadId>
+			<div[d:hflex]>	
 				<input$title.heading[flg:1 w:100% bd:0]>
-				<svg.icon @click.emit-close src=close>
-			<inline-block-editor[flg:1] blockId=threadId>
+				<svg.icon @click=e.emit('vii') src="./icons/check.svg">
+				<svg.icon @click.emit-cancel src=close>
+			e
+			
+			

@@ -217,14 +217,19 @@ tag stream-view
 			focusedItem.editing = true
 			editing? = true
 
+
+	def insertRef
+		console.log "RIGER"
+		if insertingRef
+		let {ok, id, title} = await promptRef $strim 
+		if ok
+			store.editor.insertRef {id, label: title}
+		store.editor.view.focus!
+
+
 	def mount
 		let cbs = {
-			onRefTrigger: do 
-				let {ok, id, title} = await promptRef!
-				if ok
-					store.editor.insertRef {id, label: title}
-				store.editor.view.focus!
-
+			onRefTrigger: do insertRef!
 			onFocus: do(view, e)
 				focusLast!
 				scrollToFocused false
@@ -241,15 +246,23 @@ tag stream-view
 	<self.center @keydown.esc.prevent=cancelEditing>
 		<div[d:hflex m:4 h:100%]>
 			<div.stream[bg:$pavion-bg pl:4 pr:4 rd:2]>
-				<div$strim[flg:1 h:300px ofy:auto ofx:hidden] 
+				<div$strim[flg:1 h:300px ofy:auto ofx:hidden mb:10px] 
 					tabIndex=0 
 					@keydown.down=focusDown
 					@keydown.up=focusUp
 					@keydown.enter.prevent=onEnter
 					@keydown.space.prevent=toggleFocused> for id, i in store.items.byTime
 						<ItemView$item#{id} @click=(focusTo id, i) item=(store.getItem id) selected=(store.selectedItems.has id) i=i isFocused=isFocused(id)>
-				
-				<div$noteEditor.editor.shadow @focus=(do focusLast) @keydown.shift.enter=add>
+				<div[d:hflex]>
+					<div$noteEditor.editor[pl:10px flg:1 bdr:0 rdr:0] @focus=(do focusLast) @keydown.shift.enter=add>
+					<div[d:vflex bg:$pavion-bg w:40px mb:2 rdr:2  box-sizing:border-box g:4px]>
+						<div[flg:1]>
+						<button[bg:none] @click=onEnter disabled=!mergeable?> <svg[c:$darkest] [c:gray7]=!mergeable? src="./icons/merge.svg">
+						<button[bg:none] @click=insertRef> <svg[c:$darkest] src="./icons/plus.svg">
+						<button[bg:none]> <svg[c:$darkest] src="./icons/qmark.svg">
+						<button[bg:none mb:8px] @click=add> <svg[c:$darkest] src="./icons/send.svg">
+						
+						
 
 
 tag ItemView < div
