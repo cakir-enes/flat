@@ -247,7 +247,7 @@ tag stream-view
 		<div[d:hflex m:4 h:100%]>
 			<div.stream[bg:$pavion-bg pl:4 pr:4 rd:2]>
 				<div$strim[flg:1 h:300px ofy:auto ofx:hidden mb:10px] 
-					tabIndex=0 
+					tabIndex=1 
 					@keydown.down=focusDown
 					@keydown.up=focusUp
 					@keydown.enter.prevent=onEnter

@@ -54,6 +54,33 @@ def questionFilter {txt, blockId}
 # 			for id in itemz
 # 				<Item id=id $key=id>
 
+let remote = "https://apikey-v2-2r23g21jr6yy2l0e7plhjoftplzxnwvyylhttqt1oq41:9506454e5db282dc674901394c090b11@6ddc6646-1dcd-4c47-be1a-d9400095301c-bluemix.cloudantnosqldb.appdomain.cloud/todos"
+def syncError
+	console.error "ERROR"
+
+let db = null
+let todos = []
+
+def sync()
+	# syncDom.setAttribute('data-sync-state', 'syncing');
+	console.log "SYNCING"
+	let opts = {live: true};
+	db.replicate.to(remote, opts, syncError);
+	db.replicate.from(remote, opts, syncError);
+
+def allDocs dbx
+	dbx.allDocs({include_docs: true, descending: true}, do(err, doc) todos =  doc.rows)
+
+
+def addTodo dbx, text
+	let todo = 
+		_id: new Date().toISOString(),
+		title: text,
+		completed: false
+	dbx.put(todo, do(err, result) 
+		if (!err)
+			console.log('Successfully posted a todo!'))
+
 
 tag App
 	
@@ -78,9 +105,18 @@ tag App
 
 	def closeThread id
 		openThreads = openThreads.filter do $1 isnt id
-
-
 	
+	def mount
+		console.log "INIT COUCHDB"
+		db = new PouchDB('todos')
+		# addTodo db, "viiiii {Math.random!}"
+		sync()
+		allDocs db
+
+
+		
+		
+
 
 	def render
 		<self.bg-pavion[of:auto d:flex h:100%] 
@@ -91,7 +127,7 @@ tag App
 				editor = "thread")
 			@close=(do closeThread $1.detail.id)
 			@open=(do openThread $1.detail.id)>
-		
+			<thread-joystick>
 			<div[d:hflex jc:center flg:1  m:20px]>
 				<div[d:flex pos:relative]>
 					<div#overlay.overlay[d:none]>
@@ -107,7 +143,7 @@ tag App
 								@merge=(do 
 									mergingItems = $1.detail
 									editor = "merge")>
-							stream
+							<div> JSON.stringify(todos)
 
 				<div[flg:1  mb:4 d:hflex gap:12px of:auto ml:16px]> for id in openThreads
 					<Thread $key=id id=id>

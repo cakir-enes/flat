@@ -4,6 +4,7 @@ import close from "./icons/close.svg"
 import edit from "./icons/edit.svg"
 import {addRefClickHandlers, filterRefs} from "./helper"
 import cloudzrot from "./icons/cloudz-rot.svg"
+import "./thread-joystick"
 
 export tag Thread < div
 	prop id
@@ -23,12 +24,11 @@ export tag Thread < div
 
 		
 	<self[d:hflex h:min-content c:black] @edit.stop=(do edit? = true) @cancel=(do edit? = false)>
-		<div[w:50px mr:2]>
-			<svg[fill:black] src="./icons/cloudz-rot.svg">
+		
 		if edit?						
 			<thread-editor.editor[min-width:400px rd:3px] threadId=id>
 		else 
-			<div[d:vflex min-width:400px rd:3px jc:space-between p:4px]>
+			<div[d:vflex width:400px rd:3px jc:space-between p:4px]>
 				<div[flg:0]>
 					<div.heading[d:hflex ai:center]>
 						<div> item..title
@@ -36,7 +36,12 @@ export tag Thread < div
 						<svg.icon @click.emit-edit({id}) src=edit>
 						<svg.icon @click.emit-close({id}) src=close>
 					<div$c innerHTML=item.content>
-				<div>			
-					<h2[m:0]> "Backlinks"
+				<div[mt:8px]>
+					<div[d:hflex ta:end ai:baseline]>
+						<div[h:1.5em w:50px pr:4px]>
+							<svg[fill:black] src="./icons/cloudz.svg">
+						<h2[m:0]> "Backlinks"
+						<div[h:1.5em ml:2]>
+							<svg[fill:black] src="./icons/cloudz.svg">
 					<ol[m:0]> for b in store.getBacklinks(id) ?? []
 						<li @click=emit('open', {id: b})> <h3> store.titleOf b
