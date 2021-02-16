@@ -103,7 +103,7 @@ tag stream-view
 		let content = store.editor.view.state.doc.textContent
 		if content is "" 
 			return
-		let id = await store.appendBlock store.editor.contentHtml!
+		let id = await store.appendBlock {content: store.editor.contentHtml!, refs: store.editor.refs}
 		console.log "ADDDDDDING {id}"
 		if consumedByContentFilters content, id
 			imba.commit!
@@ -188,7 +188,7 @@ tag stream-view
 
 
 	def insertRef
-		if insertingRef
+		console.log store.editor.refs
 		let {ok, id, title} = await promptRef $strim 
 		if ok
 			store.editor.insertRef {id, label: title}
@@ -244,7 +244,6 @@ tag ItemView < div
 	
 	def render
 		<self.item [bg:$light c:$darkest]=selected tabIndex=(isFocused ? 0 : -1)>
-			console.log item._id, " ", selected
 			if item._id.startsWith "T#"
 				<Thread title=item.title content=item.content id=item._id>
 			else

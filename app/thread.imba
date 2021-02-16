@@ -23,10 +23,10 @@ export tag Thread < div
 		edit? = true
 
 		
-	<self[d:hflex h:min-content c:black] @edit.stop=(do edit? = true) @cancel=(do edit? = false)>
+	<self[d:hflex h:min-content c:black] @edit.stop=(do edit? = true)>
 		
 		if edit?						
-			<thread-editor.editor[min-width:400px rd:3px] threadId=id>
+			<thread-editor.editor[min-width:400px rd:3px] @cancel=(do edit? = false) threadId=id>
 		else 
 			<div[d:vflex width:400px rd:3px jc:space-between p:4px]>
 				<div[flg:0]>
@@ -43,5 +43,5 @@ export tag Thread < div
 						<h2[m:0]> "Backlinks"
 						<div[h:1.5em ml:2]>
 							<svg[fill:black] src="./icons/cloudz.svg">
-					<ol[m:0]> for b in store.getBacklinks(id) ?? []
+					<ol[m:0]> for b in item.backlinks ?? []
 						<li @click=emit('open', {id: b})> <h3> store.titleOf b

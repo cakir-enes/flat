@@ -20,6 +20,15 @@ def getISOWeekInMonth(date)
 	d.setDate(d.getDate() - d.getDay() + 1)
 	return {month: +d.getMonth()+1, week: Math.ceil(d.getDate()/7)}
 
+
+def diff old = [], new_ = []
+	{
+		added: new_.filter do !old.includes($1)
+		deleted: old.filter do !new_.includes($1)
+	}
+	
+	
+
 export default new class
 	
 
@@ -105,7 +114,9 @@ export default new class
 			fleeting.byId[f._id] = f
 			fleeting.byTime.push f._id
 
-	
+		fleeting.byTime = fleeting.byTime.concat(threads.byTime).sort(do $1.createdAt > $2.createdAt)
+		imba.commit!
+			
 	def addTodo {id, due}
 		let date = new Date()
 		let {month, week} = getISOWeekInMonth date
@@ -127,7 +138,7 @@ export default new class
 		questions.push {id, createdAt: new Date()}
 		storeSet "questions", questions
 
-	def appendBlock content, refs
+	def appendBlock {content, refs}
 		let now = new Date()
 		let newId = "F#{now.toISOString!}"
 		let f = { _id: newId, createdAt: now, content, refs }
@@ -164,7 +175,33 @@ export default new class
 			return newId
 		catch e
 			console.error "Err while appending thread {e}"
+	
+	def updateThread {id, title, content, refs} 
+
+		let thread = getItem id
+		let {added, deleted} = diff thread.refs, refs
+		let toWrite = []
 		
+		for r in added
+			let t = getItem r
+			t.backlinks.push id
+			toWrite.push t
+		
+		for r in deleted
+			let t = getItem r
+			t.backlinks.splice t.backlinks.indexOf(r), 1
+			toWrite.push t
+		
+		thread.title = title
+		thread.content = content
+		thread.refs = refs
+
+		toWrite.push thread
+
+		try
+			db.local.bulkDocs toWrite
+		catch e
+			console.error "Err while editing thread {e}"
 
 	def editBlock {id, content}
 		items.byId[id].content = content
@@ -174,7 +211,7 @@ export default new class
 		console.log "DELET QUESTION {id}"
 
 	def titleOf id
-		items.byId[id].title
+		getItem(id).title
 	
 	def getBacklinks id
 		backlinks[id]
@@ -191,6 +228,6 @@ export default new class
 	def query q
 		if q is ""
 			return []
-		let l = Object.values(items.byId).filter(do $1.kind is 'thread' and $1.title.includes(q))
+		let l = Object.values(threads.byId).filter(do $1.title.includes(q))
 		return l
 

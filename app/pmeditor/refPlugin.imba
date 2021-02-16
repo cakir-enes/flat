@@ -20,7 +20,7 @@ export def refPlugin { key = "[", triggered, refClick }
 				
 			else
 				null
-
+				
 		props: {
 			handleDOMEvents: {
 				

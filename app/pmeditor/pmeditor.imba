@@ -68,6 +68,12 @@ def toggleLink state, dispatch
 	return toggleMark(schema.marks.link, attrs)(state, dispatch)
 	
 
+def filterRefs node, refs
+	if node..type..name is "ref"
+		refs.push node.attrs.id
+	node.forEach do(child)
+		filterRefs child, refs
+			
 
 export def start place, content, { onRefTrigger, onFocus, onRefClick }
 	let doc = DOMParser.fromSchema(schema).parse content
@@ -88,7 +94,6 @@ export def start place, content, { onRefTrigger, onFocus, onRefClick }
 		const div = document.createElement('div')
 		const fragment = DOMSerializer.fromSchema(schema).serializeFragment(view.state.doc.content)
 		div.appendChild(fragment)
-		console.log div.innerHTML
 		return div.innerHTML
 
 	let loadHtml = do |content|
@@ -98,9 +103,14 @@ export def start place, content, { onRefTrigger, onFocus, onRefClick }
 		view.updateState newState
 		
 	return {
-		view,
-		contentHtml,
-		loadHtml,
+		view
+		contentHtml
+		loadHtml
+		get refs
+			let r = []
+			filterRefs view.state.doc, r
+			return r
+				
 		insertRef: do(opts)
 			_insertRef view.state, view.dispatch, opts
 	}

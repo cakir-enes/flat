@@ -1,14 +1,9 @@
-window.global = window;
-window.process = {};
-window.process.nextTick = setTimeout;
-
 import "./stream"
 import "./plugins/index"
 import store from "./store"
 import {Thread} from "./thread"
 import {RefPrompt} from "./prompt"
-# import PouchDB from "pouchdb-browser"
-let PouchDB =  require('pouchdb-browser/lib/index.js')
+
 
 def todoFilter {txt, blockId}
 	switch txt.slice(-2)
@@ -70,9 +65,9 @@ let todos = []
 def sync()
 	# syncDom.setAttribute('data-sync-state', 'syncing');
 	console.log "SYNCING"
-	let opts = {live: true};
-	db.replicate.to(remote, opts, syncError);
-	db.replicate.from(remote, opts, syncError);
+	# let opts = {live: true};
+	# db.replicate.to(remote, opts, syncError);
+	# db.replicate.from(remote, opts, syncError);
 
 def allDocs dbx
 	dbx.allDocs({include_docs: true, descending: true}, do(err, doc) todos =  doc.rows)
@@ -112,13 +107,7 @@ tag App
 	def closeThread id
 		openThreads = openThreads.filter do $1 isnt id
 	
-	def mount
-		console.log "INIT COUCHDB"
-		db = new PouchDB('todos')
-		# addTodo db, "viiiii {Math.random!}"
-		sync()
-		allDocs db
-
+	filter = import('./icons/kelan-Paper-texture-filter.svg')
 	def render
 		<self.bg-pavion[of:auto d:flex h:100%] 
 			@keydown.esc.prevent=cancelEdit 
@@ -137,14 +126,13 @@ tag App
 						when "thread"
 							<thread-editor.editor threadId=threadId>
 						when "merge"
-							<merge-editor.editor items=Array.from(mergingItems)>
+							<merge-editor.editor[pos:absolute t:0 l:12 h:100% zi:2 w:540px  bg:gray4] items=Array.from(mergingItems)>
 						else
 							stream = <stream-view
 								contentFilters=[todoFilter, questionFilter]
 								@merge=(do 
 									mergingItems = $1.detail
 									editor = "merge")>
-							<div> JSON.stringify(todos)
 
 				<div[flg:1  mb:4 d:hflex gap:12px of:auto ml:16px]> for id in openThreads
 					<Thread $key=id id=id>

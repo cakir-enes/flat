@@ -88,31 +88,56 @@ tag merge-editor
 		contentEditor..view.destroy!
 		titleEditor..view.destroy!
 	
-	<self[d:vflex jc:flex-start w:512px mb:0] @prompt.stop=insertRef @keydown.shift.enter=merge>
-		<div>
-			<input type="text" bind=title>
-			<div$contentEditor>
+	<self[d:vflex jc:flex-start mb:0] @prompt.stop=insertRef @keydown.shift.enter=merge>
+		<input.heading[p:4 w:100%] placeholder="What's this all about?" type="text" bind=title>
+		<div$contentEditor>
 
 
 
 tag thread-editor
 	prop threadId
 	
+	editor
 
 	get thread
-		store.items.byId[threadId]
+		store.getItem threadId
 
 	def mount
+		let cbs = {
+			onRefTrigger: do emit('prompt')
+			onFocus: do(),
+			onRefClick: do emit('open', {id: $1})
+		}
+		let content = toElement thread.content
+		editor = start {mount: $editor}, content, cbs
+		editor.view.focus!
 		$title.value = thread.title
 		
+	
+	def unmount
+		editor.view.destroy!
 
-	def render
-		<self[d:vflex jc:flex-start mb:0 bd:0 p:4px] @keydown.esc.stop.emit-cancel>
-			e = <inline-block-editor[flg:1] blockId=threadId>
-			<div[d:hflex]>	
-				<input$title.heading[flg:1 w:100% bd:0]>
-				<svg.icon @click=e.emit('vii') src="./icons/check.svg">
-				<svg.icon @click.emit-cancel src=close>
-			e
-			
+	
+	def finishEditing
+		store.updateThread {id: threadId, title: $title.value, content: editor.contentHtml!, refs: editor.refs}
+		emit 'cancel'
+
+	def insertRef
+		let {ok, id, title} = await promptRef $parent
+		if ok
+			editor.insertRef {id, label: title}
+		editor.view.focus!
+
+
+	<self[d:vflex jc:flex-start mb:0 bd:0 p:4px] 
+		@keydown.esc.stop.emit-cancel 
+		@keydown.shift.enter=finishEditing 
+		@prompt.stop=insertRef>
+		<div[d:hflex]>	
+			<input$title.heading[flg:1 w:100% bd:0]>
+			<svg.icon @click=finishEditing src="./icons/check.svg">
+			<svg.icon @click.emit-cancel src=close>
+		<div$parent[pos:relative flg:1]>
+			<div$editor[h:100% bd:0 bg:none]>
+		
 			

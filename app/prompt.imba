@@ -52,9 +52,8 @@ export tag RefPrompt
 	def cancelPrompt e
 		emit('cancel')
 	
-	def select {id, title}
-		console.log "SELECTING"
-		emit 'select', {id, title}
+	def select {_id, title}
+		emit 'select', {id: _id, title}
 		emit 'cancel'
 	
 
