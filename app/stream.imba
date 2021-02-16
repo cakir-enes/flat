@@ -68,7 +68,6 @@ tag Edit
 			<textarea$box bind=content> 
 
 
-
 tag stream-view
 	// Array of filter runs them by order until one of them return true
 	prop contentFilters
@@ -78,7 +77,7 @@ tag stream-view
 		.editor h:13rem max-height:12rem fls:0 bg:$darkest mb:2 c:$light rd:6px of:auto
 			
 	newBlock = ''
-	focusedItemMeta = {i: null, id: null}
+	focusedItemMeta = null
 	editingItem = null
 	editor = ''
 	editing? = false
@@ -89,37 +88,9 @@ tag stream-view
 	get editable?
 		focusedItem
 
-	get focusedBlock
-		store.items.byId[focusedItemMeta.id]
-
-	get nextFocusableBlock
-		let i = (focusedItemMeta..i + 1) ?? 0
-		const len = store.items.byTime.length
-		
-		if i == len
-			return focusedItemMeta
-		
-		while i < len
-			let id = store.items.byTime[i]
-			
-			if store.getItem(id).kind is 'block'
-				return {i, id}
-			i += 1
-		
-		return focusedItemMeta
-
-	get prevFocusableBlock
-		let i = (focusedItemMeta..i - 1) ?? 0
-		const len = store.items.byTime.length
-		if i < 0
-			return focusedBlock
-		while i > -1
-			let id = store.items.byTime[i]
-			if store.getItem(id).kind is 'block'
-				return {i, id}
-			i -= 1
-		return focusedBlock
-
+	get focused
+		if focusedItemMeta..id
+			store.getItem focusedItemMeta.id
 
 	def consumedByContentFilters txtContent, id
 		for cf in contentFilters ?? []
@@ -132,8 +103,8 @@ tag stream-view
 		let content = store.editor.view.state.doc.textContent
 		if content is "" 
 			return
-		let id = store.appendBlock store.editor.contentHtml!
-		
+		let id = await store.appendBlock store.editor.contentHtml!
+		console.log "ADDDDDDING {id}"
 		if consumedByContentFilters content, id
 			imba.commit!
 			
@@ -141,14 +112,12 @@ tag stream-view
 		setTimeout(&, 80) do
 			document.getElementById(id).scrollIntoView {behavior: "smooth", block: "end", inline: "nearest"}
 
-	def isFocused id 
-		focusedBlock && focusedBlock.id is id
+	def isFocused id
+		focusedItemMeta..id is id
 		
 	def scrollToFocused alsoFocus = true
-		if !focusedBlock
-			return
 		if alsoFocus
-			document.getElementById(focusedBlock.id).focus!
+			document.getElementById(focusedItemMeta..id).focus!
 
 	def changeFocus e, down?
 		if editing?
@@ -156,15 +125,19 @@ tag stream-view
 		e.preventDefault!
 
 		if down?
-			let {i, id} = nextFocusableBlock
-			focusedItemMeta = { i, id }
-			document.getElementById(id).focus!
-			scrollToFocused!
+			let i = focusedItemMeta..i ?? -2
+			if i is -2 and store.fleeting.byTime.length > 0
+				i = -1
+			if i isnt -2 and i < store.fleeting.byTime.length - 1
+				focusedItemMeta = {i: i + 1, id: store.fleeting.byTime[i + 1]}
+				document.getElementById(focusedItemMeta.id).focus!
+				scrollToFocused!
 		else
-			let {i, id} = prevFocusableBlock
-			focusedItemMeta = { i, id }
-			document.getElementById(id).focus!
-			scrollToFocused!
+			let i = focusedItemMeta..i ?? -1 
+			if i > 0
+				focusedItemMeta = {i: i - 1, id: store.fleeting.byTime[i - 1]}
+				document.getElementById(focusedItemMeta.id).focus!
+				scrollToFocused!
 
 	def focusTo id, i
 		if editing?
@@ -181,22 +154,18 @@ tag stream-view
 		$strim.scrollTop = $strim.scrollHeight
 	
 	def focusLast
-		focusedItemMeta = {i: null, id: null}
-		for i in [store.items.byTime.length - 1 .. 0]
-			let id = store.items.byTime[i]
-			if store.getItem(id).kind is "block"
-				focusedItemMeta = {i, id}
-				return
+		focusedItemMeta = store.lastFleetingInfo
+		
 			
 	def toggleFocused
-		let {id} = focusedItemMeta
-		
-		if id is undefined or store.getItem(id).kind is 'thread'
-			return
-		if store.selectedItems.has id
-			store.selectedItems.delete id
-		else
-			store.selectedItems.add id
+		let id = focusedItemMeta..id
+		if id..startsWith "F#"
+			if store.selectedItems.has id
+				store.selectedItems.delete id
+			else
+				store.selectedItems.add id
+				console.log "HERE ", store.selectedItems
+			
 			
 	def cancelEditing
 		if !editing?
@@ -219,7 +188,6 @@ tag stream-view
 
 
 	def insertRef
-		console.log "RIGER"
 		if insertingRef
 		let {ok, id, title} = await promptRef $strim 
 		if ok
@@ -251,7 +219,7 @@ tag stream-view
 					@keydown.down=focusDown
 					@keydown.up=focusUp
 					@keydown.enter.prevent=onEnter
-					@keydown.space.prevent=toggleFocused> for id, i in store.items.byTime
+					@keydown.space.prevent=toggleFocused> for id, i in store.fleeting.byTime
 						<ItemView$item#{id} @click=(focusTo id, i) item=(store.getItem id) selected=(store.selectedItems.has id) i=i isFocused=isFocused(id)>
 				<div[d:hflex]>
 					<div$noteEditor.editor[pl:10px flg:1 bdr:0 rdr:0] @focus=(do focusLast) @keydown.shift.enter=add>
@@ -272,15 +240,15 @@ tag ItemView < div
 	prop isFocused
 
 	css .item p:12px of:auto rd:4px pl:6px pr:6px m:4px bg:none @hover:#001514 c:$darkest @hover:$light
-		* m:0
-		
+		* m:0		
 	
 	def render
 		<self.item [bg:$light c:$darkest]=selected tabIndex=(isFocused ? 0 : -1)>
-			if item.kind is "thread" 
-				<Thread title=item.title content=item.content id=item.id>
+			console.log item._id, " ", selected
+			if item._id.startsWith "T#"
+				<Thread title=item.title content=item.content id=item._id>
 			else
 				if item.editing
-					<inline-block-editor blockId=item.id>
+					<inline-block-editor blockId=item._id>
 				else
 					<Block content=item.content>

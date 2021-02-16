@@ -1,8 +1,14 @@
+window.global = window;
+window.process = {};
+window.process.nextTick = setTimeout;
+
 import "./stream"
 import "./plugins/index"
 import store from "./store"
 import {Thread} from "./thread"
 import {RefPrompt} from "./prompt"
+# import PouchDB from "pouchdb-browser"
+let PouchDB =  require('pouchdb-browser/lib/index.js')
 
 def todoFilter {txt, blockId}
 	switch txt.slice(-2)
@@ -55,8 +61,8 @@ def questionFilter {txt, blockId}
 # 				<Item id=id $key=id>
 
 let remote = "https://apikey-v2-2r23g21jr6yy2l0e7plhjoftplzxnwvyylhttqt1oq41:9506454e5db282dc674901394c090b11@6ddc6646-1dcd-4c47-be1a-d9400095301c-bluemix.cloudantnosqldb.appdomain.cloud/todos"
-def syncError
-	console.error "ERROR"
+def syncError e
+	console.error "ERROR{e}"
 
 let db = null
 let todos = []
@@ -112,11 +118,6 @@ tag App
 		# addTodo db, "viiiii {Math.random!}"
 		sync()
 		allDocs db
-
-
-		
-		
-
 
 	def render
 		<self.bg-pavion[of:auto d:flex h:100%] 

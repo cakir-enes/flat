@@ -1,3 +1,8 @@
+window.global = window;
+window.process = {};
+window.process.nextTick = setTimeout;
+let PouchDB = require('pouchdb-browser')
+
 def storeGet key
 		let o = window.localStorage.getItem key
 		if o
@@ -20,17 +25,34 @@ export default new class
 
 	constructor
 		# window.localStorage.clear!
-		items = storeGet("items") ?? {
+		db = {local: null, remote: null}
+		items =  {
 			byId: {},
 			byTime: []
 		}
-		questions = storeGet("questions") ?? []
-		backlinks = storeGet("backlinks") ?? {}
+		fleeting = {
+			byId: {},
+			byTime: []
+		}
+		threads = {
+			byId: {},
+			byTime: []
+		}
+		questions =  []
+		backlinks =  {}
 		selectedItems = new Set()
-		todos = storeGet("todos") ?? {today: [], week: [], year: [], month: []}
+		todos =  {today: [], week: [], year: [], month: []}
 		streams = {}
 		fixTodosByDue!
+		initDB!
+
 	
+	get lastFleetingInfo
+		let s = fleeting.byTime.length - 1
+		if s > -1
+			{ i: s, id: fleeting.byTime[s] } 
+		else
+			null
 
 	def fixTodosByDue 
 		let date = new Date()
@@ -64,7 +86,25 @@ export default new class
 		todos.year = yearTodos
 		storeSet "todos", todos
 			
+	def initDB
+		db.local = new PouchDB('flat')
 		
+		let getDocsDesc = do(startkey)
+			let d = await db.local.allDocs {include_docs: true, descending: true, endkey: startkey, startkey: "{startkey}\uffff"}
+			return d.rows
+		
+		let getDocsAsc = do(startkey) 
+			let d = await db.local.allDocs {include_docs: true,  endkey: "{startkey}\uffff", startkey}
+			return d.rows
+
+		for {doc: t} in await getDocsDesc "T#"
+			threads.byId[t._id] = t
+			threads.byTime.push t._id
+		
+		for {doc: f} in await getDocsAsc "F#"
+			fleeting.byId[f._id] = f
+			fleeting.byTime.push f._id
+
 	
 	def addTodo {id, due}
 		let date = new Date()
@@ -87,30 +127,44 @@ export default new class
 		questions.push {id, createdAt: new Date()}
 		storeSet "questions", questions
 
-	def appendBlock content
-		let newId = "block{items.byTime.length}"
-		let ca = new Date()
-		let newBlock = { id: newId, createdAt: new Date(), kind: "block", content }
-		items.byId[newId] = newBlock
-		items.byTime.push newId
-		storeSet "items", items
-		newId
+	def appendBlock content, refs
+		let now = new Date()
+		let newId = "F#{now.toISOString!}"
+		let f = { _id: newId, createdAt: now, content, refs }
+
+		try 
+			await db.local.put f
+			fleeting.byId[newId] = f
+			fleeting.byTime.push newId
+			console.log "ENW FELEETING"
+			console.log fleeting
+			return newId
+		catch e
+			console.error "Err while appending block {e}"
+
 	
 	def appendThread {title, content, refs}
-		let newId = "thread{items.byTime.length}"
-
-		for r in refs
-			let b = backlinks[r] ?? []
-			b.push(newId)
-			backlinks[r] = b
-
-		let t = { id: newId, createdAt: "23", refs, title, kind: "thread", content }
+		let now = new Date()
+		let newId = "T#{now.toISOString!}"
+		let toWrite = []
 		
-		items.byTime.push newId
-		items.byId[newId] = t
-		storeSet "items", items
-		storeSet "backlinks", backlinks
-		newId
+		for r in refs
+			let b = threads.byId[r]
+			b.backlinks.push(newId)
+			toWrite.push b
+
+		let t = { _id: newId, refs, title, content, backlinks: [] }
+		toWrite.push t
+
+		try 
+			await db.local.bulkDocs toWrite
+			threads.byId[newId] = t
+			threads.byTime.push newId
+			fleeting.byTime.push newId
+			return newId
+		catch e
+			console.error "Err while appending thread {e}"
+		
 
 	def editBlock {id, content}
 		items.byId[id].content = content
@@ -126,7 +180,13 @@ export default new class
 		backlinks[id]
 
 	def getItem id
-		items.byId[id]
+		if id.startsWith "T#"
+			threads.byId[id]
+		elif id.startsWith "F#"
+			fleeting.byId[id]
+		else
+			console.error "Can't fetch {id}"
+			null
 	
 	def query q
 		if q is ""
