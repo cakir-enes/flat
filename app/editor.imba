@@ -42,7 +42,7 @@ tag inline-block-editor
 
 	<self @keydown.shift.enter=finishEditing @prompt.stop=insertRef>
 		<div$parent[pos:relative]>
-			<div$editor[h:100% bd:0 bg:none]>
+			<div$editor[h:100% bd:0 bg:none of:auto]>
 	
 
 tag merge-editor
@@ -89,8 +89,8 @@ tag merge-editor
 		titleEditor..view.destroy!
 	
 	<self[d:vflex jc:flex-start mb:0] @prompt.stop=insertRef @keydown.shift.enter=merge>
-		<input.heading[p:4 w:100%] placeholder="What's this all about?" type="text" bind=title>
-		<div$contentEditor>
+		<input.heading[p:4 w:100% of:auto] placeholder="What's this all about?" type="text" bind=title>
+		<div$contentEditor[of:auto]>
 
 
 
@@ -119,7 +119,7 @@ tag thread-editor
 
 	
 	def finishEditing
-		store.updateThread {id: threadId, title: $title.value, content: editor.contentHtml!, refs: editor.refs}
+		await store.updateThread {id: threadId, title: $title.value, content: editor.contentHtml!, refs: editor.refs}
 		emit 'cancel'
 
 	def insertRef
@@ -129,12 +129,12 @@ tag thread-editor
 		editor.view.focus!
 
 
-	<self[d:vflex jc:flex-start mb:0 bd:0 p:4px] 
+	<self[d:vflex jc:flex-start mb:0 bd:0 p:4px max-width:450px] 
 		@keydown.esc.stop.emit-cancel 
 		@keydown.shift.enter=finishEditing 
 		@prompt.stop=insertRef>
 		<div[d:hflex]>	
-			<input$title.heading[flg:1 w:100% bd:0]>
+			<input$title.heading[flg:1 w:100% bd:0 of:auto]>
 			<svg.icon @click=finishEditing src="./icons/check.svg">
 			<svg.icon @click.emit-cancel src=close>
 		<div$parent[pos:relative flg:1]>

@@ -44,4 +44,4 @@ export tag Thread < div
 						<div[h:1.5em ml:2]>
 							<svg[fill:black] src="./icons/cloudz.svg">
 					<ol[m:0]> for b in item.backlinks ?? []
-						<li @click=emit('open', {id: b})> <h3> store.titleOf b
+						<li [c@hover:white bg@hover:$darkest cursor:pointer rd:2] @click=emit('open', {id: b})> <h3[p:2px]> store.titleOf b

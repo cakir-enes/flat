@@ -104,7 +104,6 @@ tag stream-view
 		if content is "" 
 			return
 		let id = await store.appendBlock {content: store.editor.contentHtml!, refs: store.editor.refs}
-		console.log "ADDDDDDING {id}"
 		if consumedByContentFilters content, id
 			imba.commit!
 			
@@ -222,15 +221,13 @@ tag stream-view
 					@keydown.space.prevent=toggleFocused> for id, i in store.fleeting.byTime
 						<ItemView$item#{id} @click=(focusTo id, i) item=(store.getItem id) selected=(store.selectedItems.has id) i=i isFocused=isFocused(id)>
 				<div[d:hflex]>
-					<div$noteEditor.editor[pl:10px flg:1 bdr:0 rdr:0] @focus=(do focusLast) @keydown.shift.enter=add>
+					<div$noteEditor.editor[pl:10px flg:1 bdr:0 rdr:0 max-width:460px of:auto] @focus=(do focusLast) @keydown.shift.enter=add>
 					<div[d:vflex bg:$pavion-bg w:40px mb:2 rdr:2  box-sizing:border-box g:4px]>
 						<div[flg:1]>
 						<button[bg:none] @click=onEnter disabled=!mergeable?> <svg[c:$darkest] [c:gray7]=!mergeable? src="./icons/merge.svg">
 						<button[bg:none] @click=insertRef> <svg[c:$darkest] src="./icons/plus.svg">
 						<button[bg:none]> <svg[c:$darkest] src="./icons/qmark.svg">
 						<button[bg:none mb:8px] @click=add> <svg[c:$darkest] src="./icons/send.svg">
-						
-						
 
 
 tag ItemView < div

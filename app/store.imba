@@ -199,7 +199,7 @@ export default new class
 		toWrite.push thread
 
 		try
-			db.local.bulkDocs toWrite
+			await db.local.bulkDocs toWrite
 		catch e
 			console.error "Err while editing thread {e}"
 
