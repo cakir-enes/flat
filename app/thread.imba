@@ -26,9 +26,9 @@ export tag Thread < div
 	<self[d:hflex h:min-content c:black] @edit.stop=(do edit? = true)>
 		
 		if edit?						
-			<thread-editor.editor[min-width:400px rd:3px] @cancel=(do edit? = false) threadId=id>
+			<thread-editor.editor[min-width:400px rd:3px m:0] @cancel=(do edit? = false) threadId=id>
 		else 
-			<div[d:vflex width:400px rd:3px jc:space-between p:4px]>
+			<div[d:vflex width:400px rd:3px jc:space-between p:8px bg:$black c:$light-gray4]>
 				<div[flg:0]>
 					<div.heading[d:hflex ai:center]>
 						<div> item..title
@@ -37,10 +37,10 @@ export tag Thread < div
 						<svg.icon @click.emit-close({id}) src=close>
 					<div$c innerHTML=item.content>
 				<div[mt:8px]>
-					<div[d:hflex ta:end ai:baseline]>
+					<div[d:hflex]>
 						<div[h:1.5em w:50px pr:4px]>
-							<svg[fill:black] src="./icons/cloudz.svg">
-						<h2[m:0]> "Backlinks"
+							<svg[fill:$dark-gray2] src="./icons/cloudz.svg">
+						<h2[fs:1.2rem fw:bold]> "Backlinks"
 						<div[h:1.5em ml:2]>
 							<svg[fill:black] src="./icons/cloudz.svg">
 					<ol[m:0]> for b in item.backlinks ?? []

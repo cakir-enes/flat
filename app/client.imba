@@ -107,9 +107,8 @@ tag App
 	def closeThread id
 		openThreads = openThreads.filter do $1 isnt id
 	
-	filter = import('./icons/kelan-Paper-texture-filter.svg')
 	def render
-		<self.bg-pavion[of:auto d:flex h:100%] 
+		<self[of:auto d:flex h:100% bg:$dark-gray3] 
 			@keydown.esc.prevent=cancelEdit 
 			@close-editor=cancelEdit
 			@edit=(do 
@@ -117,16 +116,16 @@ tag App
 				editor = "thread")
 			@close=(do closeThread $1.detail.id)
 			@open=(do openThread $1.detail.id)>
-			<thread-joystick>
+			# <thread-joystick>
 			<div[d:hflex jc:center flg:1  m:20px]>
 				<div[d:flex pos:relative]>
 					<div#overlay.overlay[d:none]>
-					<svg[fill:black w:50px] src="./icons/cloudz.svg">
+					# <svg[fill:$light-gray1 w:50px] src="./icons/cloudz.svg">
 					switch editor
 						when "thread"
 							<thread-editor.editor threadId=threadId>
 						when "merge"
-							<merge-editor.editor[pos:absolute t:0 l:12 h:100% zi:2 w:540px  bg:gray4] items=Array.from(mergingItems)>
+							<merge-editor.editor[pos:absolute t:0 l:12 h:100% zi:2 w:540px] items=Array.from(mergingItems)>
 						else
 							stream = <stream-view
 								contentFilters=[todoFilter, questionFilter]

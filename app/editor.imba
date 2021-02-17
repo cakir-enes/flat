@@ -137,7 +137,7 @@ tag thread-editor
 			<input$title.heading[flg:1 w:100% bd:0 of:auto]>
 			<svg.icon @click=finishEditing src="./icons/check.svg">
 			<svg.icon @click.emit-cancel src=close>
-		<div$parent[pos:relative flg:1]>
-			<div$editor[h:100% bd:0 bg:none]>
+		<div$parent[pos:relative flg:1 m:0]>
+			<div$editor[h:100% bd:0 bg:none m:0]>
 		
 			

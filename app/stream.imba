@@ -211,22 +211,22 @@ tag stream-view
 	
 	<self.center @keydown.esc.prevent=cancelEditing>
 		<div[d:hflex m:4 h:100%]>
-			<div.stream[bg:$pavion-bg pl:4 pr:4 rd:2]>
+			<div.stream[pl:4 pr:4 rd:2 bg:$black]>
 				<div$strim[flg:1 h:300px ofy:auto ofx:hidden mb:10px] 
 					tabIndex=1 
 					@keydown.down=focusDown
 					@keydown.up=focusUp
 					@keydown.enter.prevent=onEnter
-					@keydown.space.prevent=toggleFocused> for id, i in store.fleeting.byTime
+					@keydown.space=toggleFocused> for id, i in store.fleeting.byTime
 						<ItemView$item#{id} @click=(focusTo id, i) item=(store.getItem id) selected=(store.selectedItems.has id) i=i isFocused=isFocused(id)>
 				<div[d:hflex]>
-					<div$noteEditor.editor[pl:10px flg:1 bdr:0 rdr:0 max-width:460px of:auto] @focus=(do focusLast) @keydown.shift.enter=add>
-					<div[d:vflex bg:$pavion-bg w:40px mb:2 rdr:2  box-sizing:border-box g:4px]>
+					<div$noteEditor.editor[pl:10px flg:1 pr:4px max-width:460px of:auto bg:$dark-gray2] @focus=(do focusLast) @keydown.shift.enter=add>
+					<div[d:vflex bg:$dark-gray1 w:40px mb:2 rdr:2 g:4px]>
 						<div[flg:1]>
-						<button[bg:none] @click=onEnter disabled=!mergeable?> <svg[c:$darkest] [c:gray7]=!mergeable? src="./icons/merge.svg">
-						<button[bg:none] @click=insertRef> <svg[c:$darkest] src="./icons/plus.svg">
-						<button[bg:none]> <svg[c:$darkest] src="./icons/qmark.svg">
-						<button[bg:none mb:8px] @click=add> <svg[c:$darkest] src="./icons/send.svg">
+						<button[bg:none] @click=onEnter disabled=!mergeable?> <svg[c:$light-gray2] [c:gray7]=!mergeable? src="./icons/merge.svg">
+						<button[bg:none] @click=insertRef> <svg[c:$light-gray2] src="./icons/plus.svg">
+						<button[bg:none]> <svg[c:$light-gray2] src="./icons/qmark.svg">
+						<button[bg:none mb:8px] @click=add> <svg[c:$light-gray2] src="./icons/send.svg">
 
 
 tag ItemView < div
@@ -235,11 +235,11 @@ tag ItemView < div
 	prop selected
 	prop isFocused
 
-	css .item p:12px of:auto rd:4px pl:6px pr:6px m:4px bg:none @hover:#001514 c:$darkest @hover:$light
+	css .item p:12px of:auto rd:4px pl:6px pr:6px m:4px bg:none @hover:$dark-gray2 c:$light-gray4 @hover:$light
 		* m:0		
 	
 	def render
-		<self.item [bg:$light c:$darkest]=selected tabIndex=(isFocused ? 0 : -1)>
+		<self.item[bdb:1px solid $dark-gray2 rd:0] [bg:$light-gray3 c:$black]=selected tabIndex=(isFocused ? 0 : -1)>
 			if item._id.startsWith "T#"
 				<Thread title=item.title content=item.content id=item._id>
 			else

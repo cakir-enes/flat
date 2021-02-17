@@ -4,13 +4,119 @@ import cloudz from "./icons/cloudz.svg"
 global css 
 	@root
 		# --primary:linear-gradient(178.28deg, #424242 1.39%, #303134 98.5%)
-		--pavion-bg:rgba(13, 13, 13, 0.19)
-		--primary:#0f1212
-		--primary2:red
-		--accent:#50566A
-		--light:#e9e9e9
-		--darkest:#222429
-		--cyan:#94dae0
+		# --pavion-bg:rgba(13, 13, 13, 0.19)
+		# --primary:#0f1212
+		# --primary2:red
+		# --accent:#50566A
+		# --light:#e9e9e9
+		# --darkest:#222429
+		# --cyan:#94dae0
+		$black: #10161a
+
+		$dark-gray1: #182026
+		$dark-gray2: #202b33
+		$dark-gray3: #293742
+		$dark-gray4: #30404d
+		$dark-gray5: #394b59
+
+		$gray1: #5c7080
+		$gray2: #738694
+		$gray3: #8a9ba8
+		$gray4: #a7b6c2
+		$gray5: #bfccd6
+
+		$light-gray1: #ced9e0
+		$light-gray2: #d8e1e8
+		$light-gray3: #e1e8ed
+		$light-gray4: #ebf1f5
+		$light-gray5: #f5f8fa
+
+		$white: #ffffff
+
+		$blue1: #0e5a8a
+		$blue2: #106ba3
+		$blue3: #137cbd
+		$blue4: #2b95d6
+		$blue5: #48aff0
+
+		$green1: #0a6640
+		$green2: #0d8050
+		$green3: #0f9960
+		$green4: #15b371
+		$green5: #3dcc91
+
+		$orange1: #a66321
+		$orange2: #bf7326
+		$orange3: #d9822b
+		$orange4: #f29d49
+		$orange5: #ffb366
+
+		$red1: #a82a2a
+		$red2: #c23030
+		$red3: #db3737
+		$red4: #f55656
+		$red5: #ff7373
+
+		$vermilion1: #9e2b0e
+		$vermilion2: #b83211
+		$vermilion3: #d13913
+		$vermilion4: #eb532d
+		$vermilion5: #ff6e4a
+
+		$rose1: #a82255
+		$rose2: #c22762
+		$rose3: #db2c6f
+		$rose4: #f5498b
+		$rose5: #ff66a1
+
+		$violet1: #5c255c
+		$violet2: #752f75
+		$violet3: #8f398f
+		$violet4: #a854a8
+		$violet5: #c274c2
+
+		$indigo1: #5642a6
+		$indigo2: #634dbf
+		$indigo3: #7157d9
+		$indigo4: #9179f2
+		$indigo5: #ad99ff
+
+		$cobalt1: #1f4b99
+		$cobalt2: #2458b3
+		$cobalt3: #2965cc
+		$cobalt4: #4580e6
+		$cobalt5: #669eff
+
+		$turquoise1: #008075
+		$turquoise2: #00998c
+		$turquoise3: #00b3a4
+		$turquoise4: #14ccbd
+		$turquoise5: #2ee6d6
+
+		$forest1: #1d7324
+		$forest2: #238c2c
+		$forest3: #29a634
+		$forest4: #43bf4d
+		$forest5: #62d96b
+
+		$lime1: #728c23
+		$lime2: #87a629
+		$lime3: #9bbf30
+		$lime4: #b6d94c
+		$lime5: #d1f26d
+
+		$gold1: #a67908
+		$gold2: #bf8c0a
+		$gold3: #d99e0b
+		$gold4: #f2b824
+		$gold5: #ffc940
+
+		$sepia1: #63411e
+		$sepia2: #7d5125
+		$sepia3: #96622d
+		$sepia4: #b07b46
+		$sepia5: #c99765
+
 
 	
 	body w:100% h:100% m:0
@@ -42,7 +148,7 @@ global css
 		fw:500
 
 	.icon
-		w:18px h:18px cursor:pointer bg@hover:black c@hover:white p:4px rd:4
+		w:24px h:24px cursor:pointer bg@hover:black c@hover:white p:4px rd:4
 
 	.ref
 		ff:'Zilla Slab Highlight' cursor:pointer
@@ -53,20 +159,10 @@ global css
 
 	html
 		w:100% h:100% m:0 ff:'Work Sans' c:white
+
+	.editor > p
+		m:0
 	
-	.repeat
-		bgs:7vw
-		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 28' width='56' height='28'%3E%3Cpath fill='white' d='M56 26v2h-7.75c2.3-1.27 4.94-2 7.75-2zm-26 2a2 2 0 1 0-4 0h-4.09A25.98 25.98 0 0 0 0 16v-2c.67 0 1.34.02 2 .07V14a2 2 0 0 0-2-2v-2a4 4 0 0 1 3.98 3.6 28.09 28.09 0 0 1 2.8-3.86A8 8 0 0 0 0 6V4a9.99 9.99 0 0 1 8.17 4.23c.94-.95 1.96-1.83 3.03-2.63A13.98 13.98 0 0 0 0 0h7.75c2 1.1 3.73 2.63 5.1 4.45 1.12-.72 2.3-1.37 3.53-1.93A20.1 20.1 0 0 0 14.28 0h2.7c.45.56.88 1.14 1.29 1.74 1.3-.48 2.63-.87 4-1.15-.11-.2-.23-.4-.36-.59H26v.07a28.4 28.4 0 0 1 4 0V0h4.09l-.37.59c1.38.28 2.72.67 4.01 1.15.4-.6.84-1.18 1.3-1.74h2.69a20.1 20.1 0 0 0-2.1 2.52c1.23.56 2.41 1.2 3.54 1.93A16.08 16.08 0 0 1 48.25 0H56c-4.58 0-8.65 2.2-11.2 5.6 1.07.8 2.09 1.68 3.03 2.63A9.99 9.99 0 0 1 56 4v2a8 8 0 0 0-6.77 3.74c1.03 1.2 1.97 2.5 2.79 3.86A4 4 0 0 1 56 10v2a2 2 0 0 0-2 2.07 28.4 28.4 0 0 1 2-.07v2c-9.2 0-17.3 4.78-21.91 12H30zM7.75 28H0v-2c2.81 0 5.46.73 7.75 2zM56 20v2c-5.6 0-10.65 2.3-14.28 6h-2.7c4.04-4.89 10.15-8 16.98-8zm-39.03 8h-2.69C10.65 24.3 5.6 22 0 22v-2c6.83 0 12.94 3.11 16.97 8zm15.01-.4a28.09 28.09 0 0 1 2.8-3.86 8 8 0 0 0-13.55 0c1.03 1.2 1.97 2.5 2.79 3.86a4 4 0 0 1 7.96 0zm14.29-11.86c1.3-.48 2.63-.87 4-1.15a25.99 25.99 0 0 0-44.55 0c1.38.28 2.72.67 4.01 1.15a21.98 21.98 0 0 1 36.54 0zm-5.43 2.71c1.13-.72 2.3-1.37 3.54-1.93a19.98 19.98 0 0 0-32.76 0c1.23.56 2.41 1.2 3.54 1.93a15.98 15.98 0 0 1 25.68 0zm-4.67 3.78c.94-.95 1.96-1.83 3.03-2.63a13.98 13.98 0 0 0-22.4 0c1.07.8 2.09 1.68 3.03 2.63a9.99 9.99 0 0 1 16.34 0z'%3E%3C/path%3E%3C/svg%3E");
-	
-
-
-	.editor
-		bg:$pavion-bg
-		p:0
-		p m:0
-		
-		
-
 
 	
 
