@@ -37,7 +37,7 @@ tag Block
 			# <ControlBar>
 
 
-tag Thread
+tag Thread < div
 	prop title
 	prop content
 	prop id
@@ -51,9 +51,8 @@ tag Thread
 		$title.replaceWith toElement title, emit 
 		
 	
-	<self[d:hflex jc:space-between cursor:pointer] @click=emit("open", {id: id})>
-		<div.heading>
-			<div$title>
+	<self.heading[d:hflex jc:space-between cursor:pointer] @click=emit("open", {id: id})>
+		<div$title>
 		# <ControlBar id=id>
 
 

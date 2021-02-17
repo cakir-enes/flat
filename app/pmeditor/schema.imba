@@ -5,7 +5,7 @@ const blockquoteDOM = ["blockquote", 0]
 const hrDOM = ["hr"]
 const preDOM = ["pre", ["code", 0]]
 const brDOM = ["br"]
-
+import store from "../store"
 export const nodes = {
 	doc: {
 	content: "block+"
@@ -14,7 +14,7 @@ export const nodes = {
 	ref: {
 		attrs: {
 			id: {},
-			label: {},
+			label: {}
 		}
 		group: "inline",
 		inline: true,
@@ -24,20 +24,25 @@ export const nodes = {
 		toDOM: do(node) [
 			"ref",
 			{
-				class: "ref",
-				'ref-id': node.attrs.id,
-				'ref-label': node.attrs.label
+				class: "ref"
+				'ref-id': node.attrs.id
+				# 'ref-label': node.attrs.label
+				
 			},
-			`#{node.attrs.label}`
+			`#{store.getItem(node.attrs.id).title}`
 		]
 
 		parseDOM: [
 			{
-				tag: 'ref[ref-id][ref-label]',
+				# tag: 'ref[ref-id][ref-label]',
+				tag: 'ref[ref-id]',
 				getAttrs: do(dom)
 					const id = dom.getAttribute 'ref-id'
-					const label = dom.getAttribute 'ref-label'
-					{ id, label }
+					# const label = dom.getAttribute 'ref-label'
+					{ 
+						id 
+						# ref-label: label
+					}
 			}
 		]
 	},

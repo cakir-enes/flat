@@ -200,6 +200,12 @@ export default new class
 
 		try
 			await db.local.bulkDocs toWrite
+			# Yeah we are doing dis
+			document.querySelectorAll("ref[ref-id='{id}']").forEach do
+				$1.innerText = "#{title}"
+			document.querySelectorAll("div[id='{id}'].heading").forEach do
+				$1.innerText = "#{title}"
+
 		catch e
 			console.error "Err while editing thread {e}"
 
