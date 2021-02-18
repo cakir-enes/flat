@@ -6,17 +6,55 @@
     <title>Simple Imba App</title>
     <!-- reference to the client script styles -->
     <link rel=stylesheet href="https://prosemirror.net/css/editor.css">
-    <link rel=stylesheet href="https://unpkg.com/browse/normalize.css@8.0.1/">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" />
     <link rel=stylesheet href="https://cdn.jsdelivr.net/gh/jgthms/minireset.css@master/minireset.min.css">
     <link rel="stylesheet" href="./client.imba">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="preconnect" href="https://fonts.gstatic.com">
+
+    <link href="http://fonts.cdnfonts.com/css/d-din" rel="stylesheet">
+                
 
     <link
         href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,400;0,500;1,400;1,500&family=Zilla+Slab+Highlight:wght@700&display=swap"
         rel="stylesheet">
     <!-- <script src="//cdn.jsdelivr.net/npm/pouchdb@7.2.1/dist/pouchdb.min.js"></script> -->
 </head>
+<style>
+    @keyframes coverUp {
+    0% {
+        transform-origin: 50% 100%;
+        transform: scale3d(1, 0.045, 1);
+    }
+
+    50% {
+        transform-origin: 50% 100%;
+        transform: scale3d(1, 1, 1);
+    }
+
+    51% {
+        transform-origin: 50% 0%;
+        transform: scale3d(1, 1, 1);
+    }
+
+    100% {
+        transform-origin: 50% 0%;
+        transform: scale3d(1, 0.045, 1);
+    }
+}
+    /* @font-face  {
+	    font-family: 'D-DIN';
+		src: url(./fonts/D-DIN.woff) format('woff');
+    }
+	
+	@font-face {
+        font-family: 'D-DIN';
+		src: url(./fonts/D-DIN-Bold.woff) format('woff');
+		font-style: bold;
+        font-weight: 500;
+    } */
+</style>
+
 
 <body>
     <!-- reference to the client script -->

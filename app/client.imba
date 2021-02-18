@@ -4,7 +4,6 @@ import store from "./store"
 import {Thread} from "./thread"
 import {RefPrompt} from "./prompt"
 
-
 def todoFilter {txt, blockId}
 	switch txt.slice(-2)
 		when "!d"

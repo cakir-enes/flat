@@ -3,15 +3,15 @@ import store from './store'
 
 export tag RefPrompt
 	css 
-		.container p:4px rd:6px bg:$darkest
+		.container p:4px rd:6px bg:$dark-gray1
 		
 		ol 
-			of:auto max-height:600px list-style:none p:0 m:16px fs:12px mr:0px
-			scrollbar-color: $light $darkest
+			of:auto max-height:600px list-style:none p:0 m:16px fs:14px mr:0px
+			scrollbar-color: $white $black
 		li 
-			bg@hover:$light bg@focus:$light 
-			p:4px bd:1px rd:4px mr:4px c:$light @hover:$darkest @focus:$darkest
-		input w:100% mt:12px fs:24px outline: none bd:0 pl:20px c:white
+			bg@hover:$light-gray2 bg@focus:$light-gray2
+			p:4px bd:1px rd:4px mr:4px c:$light-gray2 @hover:$black @focus:$black
+		input w:100% mt:12px fs:24px outline: none bd:0 pl:20px c:$white
 		h2 m:2px
 		
 	
@@ -63,7 +63,7 @@ export tag RefPrompt
 		@keydown.esc.stop=cancelPrompt 
 		@keydown.up.stop.prevent=focusUp
 		@keydown.down.stop.prevent=focusDown>		
-		<div.container.shadow>
+		<div.container[bxs:lg]>
 			<input$inp.inp 
 				autofocus 
 				type="text" 

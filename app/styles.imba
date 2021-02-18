@@ -1,7 +1,12 @@
 # including some global styles here
 import cloudz from "./icons/cloudz.svg"
+import "./stylex.css"
 
 global css 
+	@font-face
+		ff: 'D-DIN3'
+		src: url(./fonts/D-DIN.woff) format('woff')
+
 	@root
 		# --primary:linear-gradient(178.28deg, #424242 1.39%, #303134 98.5%)
 		# --pavion-bg:rgba(13, 13, 13, 0.19)
@@ -11,6 +16,7 @@ global css
 		# --light:#e9e9e9
 		# --darkest:#222429
 		# --cyan:#94dae0
+
 		$black: #10161a
 
 		$dark-gray1: #182026
@@ -139,26 +145,90 @@ global css
 			pos:absolute m:auto l:0 r:0 zi:2 w:500px h:100% d:grid place-content:center
 	
 	.heading
-		ff: 'Zilla Slab Highlight', cursive
+		ff: 'D-DIN', cursive
 		fw:bold
-		fs:1.5em
+		fs:1.1em
 	
 	.text
-		ff: 'Work Sans', sans-serif
-		fw:500
+		ff: 'D-DIN', 'Zilla Slab Highlight'
+
+	# @keyframe coverUp {
+	# 	0% 
+	# 		transform-origin: 50% 100%
+	# 		transform: scale3d(1, 0.045, 1)
+		
+
+	# 	50% 
+	# 		transform-origin: 50% 100%
+	# 		transform: scale3d(1, 1, 1)
+		
+
+	# 	51% 
+	# 		transform-origin: 50% 0%
+	# 		transform: scale3d(1, 1, 1)
+		
+
+	# 	100% 
+	# 		transform-origin: 50% 0%
+	# 		transform: scale3d(1, 0.045, 1)
+	
+
+	.link
+		cursor: pointer
+		pos:relative
+		ws: nowrap
+
+
+	.link@before 
+		content: ''
+		pos:absolute
+		w:100%
+		h:100%
+		bg: $white
+		t: 100%
+		l:0
+		pe:none
+	
+	.link@after
+		pos:absolute
+		w:100%
+		h:100%
+		bg: $white
+		t: 100%
+		l:0
+		pe:none
+	
+	.underline
+		tt:uppercase
+
+	.underline@before
+		height: 100%
+		top: 0
+		opacity: 0
+		
+	.underline@hover@before
+		o:1
+		animation: coverUp 0.3s ease forwards
+
+	.underline@after
+		content: ''
+		tween: opacity 0.3s
+	
+	.underline@hover@after
+		o: 0
 
 	.icon
 		w:24px h:24px cursor:pointer bg@hover:black c@hover:white p:4px rd:4
 
 	.ref
-		ff:'Zilla Slab Highlight' cursor:pointer
+		ff:'D-DIN' fw:bold bg:$black p:4px cursor:pointer
 	.shadow
 		box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 0px 2px, rgba(0, 0, 0, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
 	.box-shadow
 		box-shadow: rgba(240, 46, 170, 0.4) 5px 5px, rgba(240, 46, 170, 0.3) 10px 10px, rgba(240, 46, 170, 0.2) 15px 15px, rgba(240, 46, 170, 0.1) 20px 20px, rgba(240, 46, 170, 0.05) 25px 25px;
 
 	html
-		w:100% h:100% m:0 ff:'Work Sans' c:white
+		w:100% h:100% m:0 ff:'D-DIN' c:white
 
 	.editor > p
 		m:0

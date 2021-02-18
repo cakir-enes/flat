@@ -51,7 +51,7 @@ tag Thread < div
 		$title.replaceWith toElement title, emit 
 		
 	
-	<self.heading[d:hflex jc:space-between cursor:pointer] @click=emit("open", {id: id})>
+	<self.heading.link.underline[d:hflex jc:space-between cursor:pointer] @click=emit("open", {id: id})>
 		<div$title>
 		# <ControlBar id=id>
 
