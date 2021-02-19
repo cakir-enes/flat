@@ -124,7 +124,7 @@ tag App
 						when "thread"
 							<thread-editor.editor threadId=threadId>
 						when "merge"
-							<merge-editor.editor[pos:absolute t:0 l:12 h:100% zi:2 w:540px] items=Array.from(mergingItems)>
+							<merge-editor.editor[pos:absolute bg:$light-gray1 t:0 h:100% zi:2 w:540px] items=Array.from(mergingItems)>
 						else
 							stream = <stream-view
 								contentFilters=[todoFilter, questionFilter]

@@ -2,6 +2,7 @@ import store from './store'
 import {start} from './pmeditor/pmeditor'
 import {promptRef} from "./prompt"
 import close from "./icons/close.svg"
+import check from "./icons/check.svg"
 
 def toElement content
 	document.createRange().createContextualFragment content
@@ -89,7 +90,12 @@ tag merge-editor
 		titleEditor..view.destroy!
 	
 	<self[d:vflex jc:flex-start mb:0] @prompt.stop=insertRef @keydown.shift.enter=merge>
-		<input.heading[p:4 w:100% of:auto] placeholder="What's this all about?" type="text" bind=title>
+		<div[d:hflex]>
+			<input.heading[p:4 w:100% of:auto flg:1] placeholder="What's this all about?" type="text" bind=title>
+			<button[d:hflex ai:center  $black h:min-content mt:4]> 
+				<svg[w:24px h:24px] @click=merge src=check>
+				"Merge"
+			<button[w:36px h:36px mt:2 d:hflex ai:center]> <svg[c:$red2] @click.emit-close-editor src=close>
 		<div$contentEditor[of:auto]>
 
 

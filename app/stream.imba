@@ -32,7 +32,7 @@ tag Block
 		$c.replaceWith(frag)
 
 	def render
-		<self.text[d:hflex jc:space-between]>
+		<self.text[d:hflex jc:space-between cursor:pointer]>
 			<div$c[m:0]>
 			# <ControlBar>
 
@@ -51,8 +51,8 @@ tag Thread < div
 		$title.replaceWith toElement title, emit 
 		
 	
-	<self.heading.link.underline[d:hflex jc:space-between cursor:pointer] @click=emit("open", {id: id})>
-		<div$title>
+	<self[d:hflex jc:space-between cursor:pointer] @click=emit("open", {id: id})>
+		<span.heading.link.underline> <div$title>
 		# <ControlBar id=id>
 
 
@@ -153,8 +153,14 @@ tag stream-view
 	
 	def focusLast
 		focusedItemMeta = store.lastFleetingInfo
+	
+	def toggle id
+		if id..startsWith "F#"
+			if store.selectedItems.has id
+				store.selectedItems.delete id
+			else
+				store.selectedItems.add id
 		
-			
 	def toggleFocused
 		let id = focusedItemMeta..id
 		if id..startsWith "F#"
@@ -162,7 +168,6 @@ tag stream-view
 				store.selectedItems.delete id
 			else
 				store.selectedItems.add id
-				console.log "HERE ", store.selectedItems
 			
 			
 	def cancelEditing
@@ -218,7 +223,7 @@ tag stream-view
 					@keydown.up=focusUp
 					@keydown.enter.prevent=onEnter
 					@keydown.space=toggleFocused> for id, i in store.fleeting.byTime
-						<ItemView$item#{id} @click=(focusTo id, i) item=(store.getItem id) selected=(store.selectedItems.has id) i=i isFocused=isFocused(id)>
+						<ItemView$item#{id} @click=(do toggle id) item=(store.getItem id) selected=(store.selectedItems.has id) i=i isFocused=isFocused(id)>
 				<div[d:hflex]>
 					<div$noteEditor.editor[pl:10px flg:1 pr:4px max-width:460px of:auto bg:$dark-gray2] @focus=(do focusLast) @keydown.shift.enter=add>
 					<div[d:vflex bg:$dark-gray1 w:40px mb:2 rdr:2 g:4px]>

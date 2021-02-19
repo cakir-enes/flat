@@ -36,12 +36,12 @@ export tag Thread < div
 						<svg.icon @click.emit-edit({id}) src=edit>
 						<svg.icon @click.emit-close({id}) src=close>
 					<div$c innerHTML=item.content>
-				<div[mt:8px]>
+				<div[mt:16px]>
 					<div[d:hflex]>
 						<div[h:1.5em w:50px pr:4px]>
 							<svg[fill:$dark-gray2] src="./icons/cloudz.svg">
-						<h2[fs:1.2rem fw:bold]> "Backlinks"
+						<h2[fs:1.5rem fw:bold]> "Backlinks"
 						<div[h:1.5em ml:2]>
 							<svg[fill:black] src="./icons/cloudz.svg">
-					<ol[m:0]> for b in item.backlinks ?? []
+					<ol[m:0 mt:8px list-style:none]> for b in item.backlinks ?? []
 						<li [c@hover:white bg@hover:$darkest cursor:pointer rd:2] @click=emit('open', {id: b})> <h3[p:2px]> store.titleOf b

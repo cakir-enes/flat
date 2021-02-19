@@ -147,7 +147,7 @@ global css
 	.heading
 		ff: 'D-DIN', cursive
 		fw:bold
-		fs:1.1em
+		fs:1.2rem
 	
 	.text
 		ff: 'D-DIN', 'Zilla Slab Highlight'
@@ -192,15 +192,12 @@ global css
 	.link@after
 		pos:absolute
 		w:100%
-		h:100%
+		h:4px
 		bg: $white
 		t: 100%
 		l:0
 		pe:none
 	
-	.underline
-		tt:uppercase
-
 	.underline@before
 		height: 100%
 		top: 0
