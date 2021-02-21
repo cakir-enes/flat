@@ -107,16 +107,7 @@ export default new class
 		let getDocsAsc = do(startkey) 
 			let d = await db.local.allDocs {include_docs: true,  endkey: "{startkey}\uffff", startkey}
 			return d.rows
-
-		let sort = do
-			let i = 0
-			let r = 0
-			for i in [0 ... $2.length]
-				if $1.charCodeAt(i) - $2.charCodeAt(i)
-					return r
-			return r
 				
-
 		for {doc: t} in await getDocsDesc "T#"
 			t.createdAt = parseISO(t._id.substring(2))
 			threads.byId[t._id] = t

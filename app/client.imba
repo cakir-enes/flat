@@ -116,7 +116,7 @@ tag App
 			@close=(do closeThread $1.detail.id)
 			@open=(do openThread $1.detail.id)>
 			# <thread-joystick>
-			<div[d:hflex jc:center flg:1  m:20px]>
+			<div[d:hflex jc:center flg:1  m:20px] route=''>
 				<div[d:flex pos:relative]>
 					<div#overlay.overlay[d:none]>
 					# <svg[fill:$light-gray1 w:50px] src="./icons/cloudz.svg">
@@ -134,6 +134,7 @@ tag App
 
 				<div[flg:1  mb:4 d:hflex gap:12px of:auto ml:16px]> for id in openThreads
 					<Thread $key=id id=id>
+			<div route='/settings'> "VIIIIIIII"
 			<div>
 
 

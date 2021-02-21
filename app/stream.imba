@@ -7,6 +7,7 @@ import {promptRef} from './prompt'
 import {toElement} from "./helper"
 import clouds from './icons/cloudz.svg'
 import {formatDistance, parseISO} from "date-fns"
+import { createPopper } from '@popperjs/core'
 
 const icons = {
 	edit: import("./icons/edit.svg"),
@@ -77,12 +78,16 @@ tag stream-view
 	css .center d:grid place-items:center
 		.stream d:vflex w:512px pos:relative of:auto
 		.editor h:13rem max-height:12rem fls:0 bg:$darkest mb:2 c:$light rd:6px of:auto
+		button
+			cursor:pointer
+			scale@hover:1.1
 			
 	newBlock = ''
 	focusedItemMeta = null
 	editingItem = null
 	editor = ''
 	editing? = false
+	showSettings = false
 
 	get mergeable?
 		store.selectedItems.size > 0
@@ -212,6 +217,7 @@ tag stream-view
 		}
 		store.editor = start {mount: $noteEditor}, <>, cbs
 
+
 	
 	def unmount
 		store.editor.view.destroy!
@@ -220,16 +226,21 @@ tag stream-view
 	<self.center @keydown.esc.prevent=cancelEditing>
 		<div[d:hflex m:4 h:100%]>
 			<div.stream[pl:4 pr:4 rd:2 bg:$black]>
-				<div$strim[flg:1 h:300px ofy:auto ofx:hidden mb:10px] 
-					tabIndex=1 
-					@keydown.down=focusDown
-					@keydown.up=focusUp
-					@keydown.enter.prevent=onEnter
-					@keydown.space=toggleFocused> for id, i in store.fleeting.byTime
-						<ItemView$item#{id} @click=(do toggle id) item=(store.getItem id) selected=(store.selectedItems.has id) i=i isFocused=isFocused(id)>
+				if showSettings
+					<Settings @close.stop=(do showSettings = false)>
+				else
+					<div$strim[flg:1 h:300px ofy:auto ofx:hidden mb:10px] 
+						tabIndex=1 
+						@keydown.down=focusDown
+						@keydown.up=focusUp
+						@keydown.enter.prevent=onEnter
+						@keydown.space=toggleFocused> for id, i in store.fleeting.byTime
+							<ItemView$item#{id} @click=(do toggle id) item=(store.getItem id) selected=(store.selectedItems.has id) i=i isFocused=isFocused(id)>
+
 				<div[d:hflex]>
 					<div$noteEditor.editor[pl:10px flg:1 max-width:445px of:auto bg:$dark-gray2] @focus=(do focusLast) @keydown.shift.enter=add>
 					<div[d:vflex fls:0 bg:$dark-gray1 w:40px mb:2 rdr:2 g:4px]>
+						<button$set[bg:none mt:4px] @click=(do showSettings = !showSettings)> <svg[c:$light-gray1] src="./icons/cog.svg">
 						<div[flg:1]>
 						<button[bg:none] @click=onEnter disabled=!mergeable?> <svg[c:$light-gray2] [c:gray7]=!mergeable? src="./icons/merge.svg">
 						<button[bg:none] @click=insertRef> <svg[c:$light-gray2] src="./icons/plus.svg">
@@ -243,7 +254,7 @@ tag ItemView < div
 	prop selected
 	prop isFocused
 
-	css .item p:12px of:auto rd:4px pl:6px pr:6px m:4px bg:none @hover:$dark-gray2 c:$light-gray4 @hover:$light
+	css .item pt:2px of:auto rd:4px pl:6px pr:6px m:4px bg:none @hover:$dark-gray2 c:$light-gray4 @hover:$light
 		* m:0
 
 	now = new Date()
@@ -257,3 +268,27 @@ tag ItemView < div
 					<inline-block-editor blockId=item._id>
 				else
 					<Block createdAt=formatDistance(item.createdAt, now) content=item.content>
+
+
+tag Settings
+
+	url = window.localStorage.getItem "couchdb"
+
+	def save
+		window.localStorage.setItem "couchdb", $url.value
+		emit('close')
+		console.log window.localStorage.getItem "couchdb"
+
+	
+
+	<self[d:vflex flg:1]>
+		<h2[fs:3xl fw:bold]> "Settings"
+		<div[w:100% h:2px bg:white mb:14px]>
+		<h4> "CouchDB URL"
+		<input$url[bd: 1px solid $dark-gray5 h:24px c:$white p:14px mt:4px] bind=url type='text' placeholder="https://...">
+		<div[flg:1]>
+		<button[m:4px rd:4px ml:auto p:4px pl:14px pr:14px bg:$green4] 
+			@click=save
+			[scale@hover: 1.1 cursor:pointer]> "SAVE"
+
+		
