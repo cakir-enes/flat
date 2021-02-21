@@ -147,7 +147,6 @@ global css
 	.heading
 		ff: 'D-DIN', cursive
 		fw:bold
-		fs:1.2rem
 	
 	.text
 		ff: 'D-DIN', 'Zilla Slab Highlight'

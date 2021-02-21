@@ -1,6 +1,8 @@
 window.global = window;
 window.process = {};
 window.process.nextTick = setTimeout;
+import {parseISO, compareAsc} from "date-fns"
+
 let PouchDB = require('pouchdb-browser')
 
 def storeGet key
@@ -106,15 +108,26 @@ export default new class
 			let d = await db.local.allDocs {include_docs: true,  endkey: "{startkey}\uffff", startkey}
 			return d.rows
 
+		let sort = do
+			let i = 0
+			let r = 0
+			for i in [0 ... $2.length]
+				if $1.charCodeAt(i) - $2.charCodeAt(i)
+					return r
+			return r
+				
+
 		for {doc: t} in await getDocsDesc "T#"
+			t.createdAt = parseISO(t._id.substring(2))
 			threads.byId[t._id] = t
 			threads.byTime.push t._id
 		
 		for {doc: f} in await getDocsAsc "F#"
+			f.createdAt = parseISO(f._id.substring(2))
 			fleeting.byId[f._id] = f
 			fleeting.byTime.push f._id
 
-		fleeting.byTime = fleeting.byTime.concat(threads.byTime).sort(do $1.createdAt > $2.createdAt)
+		fleeting.byTime = fleeting.byTime.concat(threads.byTime).sort(do compareAsc(parseISO($1.substring(2)), parseISO($2.substring(2))))
 		imba.commit!
 			
 	def addTodo {id, due}
@@ -130,8 +143,6 @@ export default new class
 			when "year"
 				todos.year.push {id, due: date.getFullYear!}
 		storeSet "todos", todos
-		console.log "NEW TODO!"
-		console.log storeGet "todos"
 
 
 	def addQuestion id
@@ -147,8 +158,6 @@ export default new class
 			await db.local.put f
 			fleeting.byId[newId] = f
 			fleeting.byTime.push newId
-			console.log "ENW FELEETING"
-			console.log fleeting
 			return newId
 		catch e
 			console.error "Err while appending block {e}"
@@ -164,7 +173,7 @@ export default new class
 			b.backlinks.push(newId)
 			toWrite.push b
 
-		let t = { _id: newId, refs, title, content, backlinks: [] }
+		let t = { _id: newId, createdAt: now, refs, title, content, backlinks: [] }
 		toWrite.push t
 
 		try 

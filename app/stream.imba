@@ -6,6 +6,7 @@ import {DOMSerializer} from 'prosemirror-model'
 import {promptRef} from './prompt'
 import {toElement} from "./helper"
 import clouds from './icons/cloudz.svg'
+import {formatDistance, parseISO} from "date-fns"
 
 const icons = {
 	edit: import("./icons/edit.svg"),
@@ -32,8 +33,9 @@ tag Block
 		$c.replaceWith(frag)
 
 	def render
-		<self.text[d:hflex jc:space-between cursor:pointer]>
+		<self.text[d:vflex jc:space-between cursor:pointer]>
 			<div$c[m:0]>
+			<span[ml:auto c:$dark-gray5 fs:sm]> createdAt
 			# <ControlBar>
 
 
@@ -41,6 +43,7 @@ tag Thread < div
 	prop title
 	prop content
 	prop id
+	prop createdAt
 
 	hover = false
 
@@ -51,9 +54,9 @@ tag Thread < div
 		$title.replaceWith toElement title, emit 
 		
 	
-	<self[d:hflex jc:space-between cursor:pointer] @click=emit("open", {id: id})>
-		<span.heading.link.underline> <div$title>
-		# <ControlBar id=id>
+	<self[d:vflex jc:space-between cursor:pointer] @click=emit("open", {id: id})>
+		<span.heading.link.underline[w:min-content]> <div$title>
+		<span[ml:auto c:$dark-gray5 fs:sm]> createdAt
 
 
 tag Edit
@@ -225,8 +228,8 @@ tag stream-view
 					@keydown.space=toggleFocused> for id, i in store.fleeting.byTime
 						<ItemView$item#{id} @click=(do toggle id) item=(store.getItem id) selected=(store.selectedItems.has id) i=i isFocused=isFocused(id)>
 				<div[d:hflex]>
-					<div$noteEditor.editor[pl:10px flg:1 pr:4px max-width:460px of:auto bg:$dark-gray2] @focus=(do focusLast) @keydown.shift.enter=add>
-					<div[d:vflex bg:$dark-gray1 w:40px mb:2 rdr:2 g:4px]>
+					<div$noteEditor.editor[pl:10px flg:1 max-width:445px of:auto bg:$dark-gray2] @focus=(do focusLast) @keydown.shift.enter=add>
+					<div[d:vflex fls:0 bg:$dark-gray1 w:40px mb:2 rdr:2 g:4px]>
 						<div[flg:1]>
 						<button[bg:none] @click=onEnter disabled=!mergeable?> <svg[c:$light-gray2] [c:gray7]=!mergeable? src="./icons/merge.svg">
 						<button[bg:none] @click=insertRef> <svg[c:$light-gray2] src="./icons/plus.svg">
@@ -241,14 +244,16 @@ tag ItemView < div
 	prop isFocused
 
 	css .item p:12px of:auto rd:4px pl:6px pr:6px m:4px bg:none @hover:$dark-gray2 c:$light-gray4 @hover:$light
-		* m:0		
+		* m:0
+
+	now = new Date()
 	
 	def render
 		<self.item[bdb:1px solid $dark-gray2 rd:0] [bg:$light-gray3 c:$black]=selected tabIndex=(isFocused ? 0 : -1)>
 			if item._id.startsWith "T#"
-				<Thread title=item.title content=item.content id=item._id>
+				<Thread createdAt=formatDistance(item.createdAt, now) title=item.title content=item.content id=item._id>
 			else
 				if item.editing
 					<inline-block-editor blockId=item._id>
 				else
-					<Block content=item.content>
+					<Block createdAt=formatDistance(item.createdAt, now) content=item.content>
