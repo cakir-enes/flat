@@ -54,7 +54,7 @@ def questionFilter {txt, blockId}
 # 			for id in itemz
 # 				<Item id=id $key=id>
 
-let remote = "https://apikey-v2-2r23g21jr6yy2l0e7plhjoftplzxnwvyylhttqt1oq41:9506454e5db282dc674901394c090b11@6ddc6646-1dcd-4c47-be1a-d9400095301c-bluemix.cloudantnosqldb.appdomain.cloud/todos"
+
 def syncError e
 	console.error "ERROR{e}"
 

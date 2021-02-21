@@ -96,9 +96,47 @@ export default new class
 		todos.week = weekTodos
 		todos.year = yearTodos
 		storeSet "todos", todos
-			
+		
+	get remoteURL
+		window.localStorage.getItem "couchdb"
+	
+	def onChange {direction, change}
+		console.log {direction, change}
+		if direction is "pull"
+			for doc in change.docs
+				let id = doc._id
+				if id.startsWith "F#"
+					doc.createdAt = parseISO(doc.createdAt)
+					fleeting.byId[id] = doc
+					fleeting.byTime.push id
+				elif id.starsWith "T#"
+					doc.createdAt = parseISO(doc.createdAt)
+					threads.byId[id] = doc
+					threads.byTime.push id
+			imba.commit!
+
+	def onError err
+		console.log "err"
+		console.error err
+
+	def startSync
+		db.remote = new PouchDB(remoteURL)
+		new Promise(do 
+			try
+				await db.local.sync(db.remote, {live: true, retry:false})
+					.on('complete', do console.log("FINITO"))
+					.on('change', do onChange $1)
+					.on('paused', do console.log("PAUSE"))
+					.on('active', do console.log("ACTVE"))
+					.on('error', onError)
+			catch err
+				console.error "ERR", err)
+
 	def initDB
 		db.local = new PouchDB('flat')
+
+		if remoteURL
+			startSync!
 		
 		let getDocsDesc = do(startkey)
 			let d = await db.local.allDocs {include_docs: true, descending: true, endkey: startkey, startkey: "{startkey}\uffff"}
