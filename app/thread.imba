@@ -11,6 +11,8 @@ export tag Thread < div
 
 	css button bg:none @hover:black rd:6
 
+
+
 	edit? = false
 
 	get item
@@ -21,21 +23,21 @@ export tag Thread < div
 	
 	def showEditor
 		edit? = true
-
-		
-	<self[d:hflex h:min-content c:black] @edit.stop=(do edit? = true)>
+	
+	<self[d:hflex max-height:100vh c:black] @edit.stop=(do edit? = true)>
 		
 		if edit?						
 			<thread-editor.editor[min-width:400px rd:3px m:0] @cancel=(do edit? = false) threadId=id>
 		else 
-			<div[d:vflex width:400px rd:3px jc:space-between p:8px bg:$black c:$light-gray4]>
+			<div[d:vflex width:400px rd:3px h:100% jc:space-between p:8px bg:$black c:$light-gray4 of:auto]>
 				<div[flg:0]>
 					<div.heading[d:hflex ai:center]>
 						<div> item..title
 						<div[flg:1]>
 						<svg.icon @click.emit-edit({id}) src=edit>
 						<svg.icon @click.emit-close({id}) src=close>
-					<div$c innerHTML=item.content>
+					<div$c.thread innerHTML=item.content>
+
 				<div[mt:16px]>
 					<div[d:hflex]>
 						<div[h:1.5em w:50px pr:4px]>

@@ -6,7 +6,7 @@ global css
 	@font-face
 		ff: 'D-DIN3'
 		src: url(./fonts/D-DIN.woff) format('woff')
-
+	
 	@root
 		# --primary:linear-gradient(178.28deg, #424242 1.39%, #303134 98.5%)
 		# --pavion-bg:rgba(13, 13, 13, 0.19)
@@ -127,14 +127,12 @@ global css
 	
 	body w:100% h:100% m:0
 
-	* scrollbar-width: thin scrollbar-color: rgba(12,12,12,0.4) rgba(12,12,12,0.0)
+	* scrollbar-width: thin scrollbar-color: $dark-gray5 rgba(12,12,12,0.0)
 
 	input, select, textarea, button 
 		font-family: inherit
 		bg: inherit
 		bd:0
-
-	p m:0
 	
 	.bg-pavion
 		# bg: radial-gradient(42.48% 50.06% at 93.85% 91.46%, #941652 0%, rgba(179, 51, 51, 0.13) 100%), radial-gradient(75.98% 149.48% at 79.38% 18.7%, #58CEC7 0%, rgba(62, 141, 235, 0.246391) 51.71%, rgba(244, 156, 53, 0) 100%, rgba(234, 234, 234, 0) 100%), radial-gradient(75.98% 149.48% at 79.38% 18.7%, #CE9858 0%, rgba(235, 155, 62, 0.246391) 51.71%)
@@ -225,13 +223,9 @@ global css
 
 	html
 		w:100% h:100% m:0 ff:'D-DIN' c:white
-
-	.editor > p
-		m:0
 	
-
-	
-
+	.thread p
+			mb:1rem c:$white lh:1.2 hyphens:auto
 	# button -webkit-appearance: none
 	# 	bg:blue5 @hover:blue6
 	# 	fs:sm c:white

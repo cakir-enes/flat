@@ -238,7 +238,7 @@ tag stream-view
 							<ItemView$item#{id} @click=(do toggle id) item=(store.getItem id) selected=(store.selectedItems.has id) i=i isFocused=isFocused(id)>
 
 				<div[d:hflex] [h:24px of:hidden]=showSettings>
-					<div$noteEditor.editor[pl:10px flg:1 max-width:445px of:auto bg:$dark-gray2] @focus=(do focusLast) @keydown.shift.enter=add>
+					<div$noteEditor.editor[pl:10px flg:1 max-width:445px of:auto bg:$dark-gray2]@focus=(do focusLast) @keydown.shift.enter=add>
 					<div[d:vflex fls:0 bg:$dark-gray1 w:40px mb:2 rdr:2 g:4px]>
 						<button$set[bg:none mt:4px] @click=(do showSettings = !showSettings)> <svg[c:$light-gray1] src="./icons/cog.svg">
 						<div[flg:1]>
@@ -254,7 +254,7 @@ tag ItemView < div
 	prop selected
 	prop isFocused
 
-	css .item pt:2px of:auto rd:4px pl:6px pr:6px m:4px bg:none @hover:$dark-gray2 c:$light-gray4 @hover:$light
+	css .item pt:2px of:auto rd:4px pl:6px pr:6px m:4px bg:none @hover:$dark-gray2 c:$light-gray4 @hover:$light 
 		* m:0
 
 	now = new Date()
