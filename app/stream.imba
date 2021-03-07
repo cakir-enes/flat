@@ -224,7 +224,7 @@ tag stream-view
 			
 	
 	<self.center @keydown.esc.prevent=cancelEditing>
-		<div[d:hflex m:4 h:100%]>
+		<div[d:hflex m:4 h:100% w:min(80ch, 100%)]>
 			<div.stream[pl:4 pr:4 rd:2 bg:$black]>
 				if showSettings
 					<Settings @close.stop=(do showSettings = false)>
@@ -238,14 +238,14 @@ tag stream-view
 							<ItemView$item#{id} @click=(do toggle id) item=(store.getItem id) selected=(store.selectedItems.has id) i=i isFocused=isFocused(id)>
 
 				<div[d:hflex] [h:24px of:hidden]=showSettings>
-					<div$noteEditor.editor[pl:10px flg:1 max-width:445px of:auto bg:$dark-gray2]@focus=(do focusLast) @keydown.shift.enter=add>
+					<div$noteEditor.editor[flg:1 of:auto bg:$dark-gray2]@focus=(do focusLast) @keydown.shift.enter=add>
 					<div[d:vflex fls:0 bg:$dark-gray1 w:40px mb:2 rdr:2 g:4px]>
 						<button$set[bg:none mt:4px] @click=(do showSettings = !showSettings)> <svg[c:$light-gray1] src="./icons/cog.svg">
 						<div[flg:1]>
-						<button[bg:none] @click=onEnter disabled=!mergeable?> <svg[c:$light-gray2] [c:gray7]=!mergeable? src="./icons/merge.svg">
-						<button[bg:none] @click=insertRef> <svg[c:$light-gray2] src="./icons/plus.svg">
-						<button[bg:none]> <svg[c:$light-gray2] src="./icons/qmark.svg">
-						<button[bg:none mb:8px] @click=add> <svg[c:$light-gray2] src="./icons/send.svg">
+						<button @click=onEnter disabled=!mergeable?> <svg[c:$light-gray2] [c:gray7]=!mergeable? src="./icons/merge.svg">
+						<button @click=insertRef> <svg[c:$light-gray2] src="./icons/plus.svg">
+						<button> <svg[c:$light-gray2] src="./icons/qmark.svg">
+						<button[mb:8px] @click=add> <svg[c:$light-gray2] src="./icons/send.svg">
 
 
 tag ItemView < div

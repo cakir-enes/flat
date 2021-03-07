@@ -132,7 +132,7 @@ tag App
 									mergingItems = $1.detail
 									editor = "merge")>
 
-				<div[flg:1  mb:4 d:hflex gap:12px of:auto ml:16px]> for id in openThreads
+				<div[mb:4 d:hflex gap:12px of:auto ml:16px]> for id in openThreads
 					<Thread $key=id id=id>
 			<div route='/settings'> "VIIIIIIII"
 			<div>
