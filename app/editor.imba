@@ -89,10 +89,10 @@ tag merge-editor
 		contentEditor..view.destroy!
 		titleEditor..view.destroy!
 	
-	<self[d:vflex jc:flex-start mb:0] @prompt.stop=insertRef @keydown.shift.enter=merge>
+	<self[d:vflex jc:flex-start mb:0 ml:0 width:65ch] @prompt.stop=insertRef @keydown.shift.enter=merge>
 		<div[d:hflex]>
 			<input.heading[p:4 w:100% of:auto flg:1] placeholder="What's this all about?" type="text" bind=title>
-			<button[d:hflex ai:center  $black h:min-content mt:4]> 
+			<button[d:hflex ai:center h:min-content mt:4]> 
 				<svg[w:24px h:24px] @click=merge src=check>
 				"Merge"
 			<button[w:36px h:36px mt:2 d:hflex ai:center]> <svg[c:$red2] @click.emit-close-editor src=close>
@@ -135,12 +135,12 @@ tag thread-editor
 		editor.view.focus!
 
 
-	<self[d:vflex jc:flex-start mb:0 bd:0 p:4px max-width:450px] 
+	<self[d:vflex jc:flex-start mb:0 bd:0] 
 		@keydown.esc.stop.emit-cancel 
 		@keydown.shift.enter=finishEditing 
 		@prompt.stop=insertRef>
 		<div[d:hflex]>	
-			<input$title.heading[flg:1 w:100% bd:0 of:auto]>
+			<input$title.heading[flg:1 w:100% bd:0 of:auto ml:4px]>
 			<svg.icon @click=finishEditing src="./icons/check.svg">
 			<svg.icon @click.emit-cancel src=close>
 		<div$parent[pos:relative flg:1 m:0]>

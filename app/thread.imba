@@ -24,14 +24,14 @@ export tag Thread < div
 	def showEditor
 		edit? = true
 	
-	<self[d:hflex max-height:100vh c:black] @edit.stop=(do edit? = true)>
+	<self[d:hflex max-height:100vh c:black w:60ch] @edit.stop=(do edit? = true)>
 		
 		if edit?						
-			<thread-editor.editor[min-width:400px rd:3px m:0] @cancel=(do edit? = false) threadId=id>
+			<thread-editor.editor[rd:3px m:0] @cancel=(do edit? = false) threadId=id>
 		else 
-			<div[d:vflex width:400px rd:3px h:100% jc:space-between p:8px bg:$black c:$light-gray4 of:auto]>
-				<div[flg:0]>
-					<div.heading[d:hflex ai:center]>
+			<div[d:vflex rd:3px h:100% jc:space-between bg:inherit p:8px pt:0 bg:$black c:$light-gray4 of:auto]>
+				<div[flg:0 bg:inherit]>
+					<div.heading[d:hflex ai:center p:4px pos:sticky t:0 bg:inherit]>
 						<div> item..title
 						<div[flg:1]>
 						<svg.icon @click.emit-edit({id}) src=edit>

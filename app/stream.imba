@@ -76,8 +76,9 @@ tag stream-view
 	prop contentFilters
 
 	css .center d:grid place-items:center
-		.stream d:vflex w:512px pos:relative of:auto
-		.editor h:13rem max-height:12rem fls:0 bg:$darkest mb:2 c:$light rd:6px of:auto
+		.stream d:vflex w:65ch pos:relative of:auto
+		.editor fls:0 bg:none max-height:16rem mb:2 c:$white of:auto bd:none bdt:3px solid $white bdr:0
+			flg:1 of:auto max-width:100% o:0.7 @focus:1
 		button
 			cursor:pointer
 			scale@hover:1.1
@@ -224,12 +225,12 @@ tag stream-view
 			
 	
 	<self.center @keydown.esc.prevent=cancelEditing>
-		<div[d:hflex m:4 h:100% w:min(80ch, 100%)]>
-			<div.stream[pl:4 pr:4 rd:2 bg:$black]>
+		<div[d:hflex m:4 h:100%]>
+			<div.stream>
 				if showSettings
 					<Settings @close.stop=(do showSettings = false)>
 				else
-					<div$strim[flg:1 h:300px ofy:auto ofx:hidden mb:10px] 
+					<div$strim[flg:1 h:3px ofy:auto ofx:hidden mb:10px] 
 						tabIndex=1 
 						@keydown.down=focusDown
 						@keydown.up=focusUp
@@ -237,15 +238,15 @@ tag stream-view
 						@keydown.space=toggleFocused> for id, i in store.fleeting.byTime
 							<ItemView$item#{id} @click=(do toggle id) item=(store.getItem id) selected=(store.selectedItems.has id) i=i isFocused=isFocused(id)>
 
-				<div[d:hflex] [h:24px of:hidden]=showSettings>
-					<div$noteEditor.editor[flg:1 of:auto bg:$dark-gray2]@focus=(do focusLast) @keydown.shift.enter=add>
-					<div[d:vflex fls:0 bg:$dark-gray1 w:40px mb:2 rdr:2 g:4px]>
-						<button$set[bg:none mt:4px] @click=(do showSettings = !showSettings)> <svg[c:$light-gray1] src="./icons/cog.svg">
-						<div[flg:1]>
-						<button @click=onEnter disabled=!mergeable?> <svg[c:$light-gray2] [c:gray7]=!mergeable? src="./icons/merge.svg">
-						<button @click=insertRef> <svg[c:$light-gray2] src="./icons/plus.svg">
-						<button> <svg[c:$light-gray2] src="./icons/qmark.svg">
-						<button[mb:8px] @click=add> <svg[c:$light-gray2] src="./icons/send.svg">
+				<div[d:vflex flg:2] [h:24px of:hidden]=showSettings>
+					<div$noteEditor.editor[flg:0] @focus=(do focusLast) @keydown.shift.enter=add>
+					<div[d:hflex fls:0 bg:none mb:2 rdr:2 g:4px]>
+						<button> '[Settings]'
+						# <button$set[bg:none mt:4px h:16px] @click=(do showSettings = !showSettings)> <svg[c:$light-gray1] src="./icons/cog.svg">
+						# <button[h:16px] @click=onEnter disabled=!mergeable?> <svg[c:$light-gray2] [c:gray7]=!mergeable? src="./icons/merge.svg">
+						# <button[h:16px] @click=insertRef> <svg[c:$light-gray2] src="./icons/plus.svg">
+						# <button[h:16px]> <svg[c:$light-gray2] src="./icons/qmark.svg">
+						# <button[h:16px] @click=add> <svg[c:$light-gray2] src="./icons/send.svg">
 
 
 tag ItemView < div
@@ -254,13 +255,13 @@ tag ItemView < div
 	prop selected
 	prop isFocused
 
-	css .item pt:2px of:auto rd:4px pl:6px pr:6px m:4px bg:none @hover:$dark-gray2 c:$light-gray4 @hover:$light 
-		* m:0
+	css .item of:auto rd:4px pl:6px o:0.6 @focus:1 @hover:1 pr:6px lh:1.4 mt:1.4rem c:$light-gray1 @hover:$light-gray4 @focus:$white
+		# bdb:1px solid $dark-gray5 rd:0
 
 	now = new Date()
 	
 	def render
-		<self.item[bdb:1px solid $dark-gray2 rd:0] [bg:$light-gray3 c:$black]=selected tabIndex=(isFocused ? 0 : -1)>
+		<self.item [bg:$light-gray3 c:$black]=selected tabIndex=(isFocused ? 0 : -1)>
 			if item._id.startsWith "T#"
 				<Thread createdAt=formatDistance(item.createdAt, now) title=item.title content=item.content id=item._id>
 			else
